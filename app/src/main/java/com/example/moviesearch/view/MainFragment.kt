@@ -1,4 +1,4 @@
-package com.example.moviesearch.ui.main
+package com.example.moviesearch.view
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.moviesearch.R
+import com.example.moviesearch.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 

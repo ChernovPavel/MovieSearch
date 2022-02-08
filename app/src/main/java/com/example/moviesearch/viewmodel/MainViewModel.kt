@@ -1,4 +1,4 @@
-package com.example.moviesearch.ui.main
+package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.ViewModel
 

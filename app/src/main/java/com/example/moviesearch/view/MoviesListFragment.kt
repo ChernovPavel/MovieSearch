@@ -1,23 +1,22 @@
 package com.example.moviesearch.view
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.moviesearch.R
-import com.example.moviesearch.databinding.MainFragmentBinding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.moviesearch.databinding.FragmentMoviesListBinding
 import com.example.moviesearch.viewmodel.MainViewModel
 
-class MainFragment : Fragment() {
+class MoviesListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = MoviesListFragment()
     }
 
     private lateinit var viewModel: MainViewModel
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: FragmentMoviesListBinding? = null
 
     private val binding get() = _binding!!
 
@@ -25,7 +24,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_menu_list_movies"
+        android:icon="@drawable/ic_baseline_list_alt_24"
+        android:title="@string/bottom_menu_movies" />
+    <item
+        android:id="@+id/bottom_menu_favorites"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="@string/bottom_menu_favorites" />
+    <item
+        android:id="@+id/bottom_menu_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/bottom_menu_settings" />
+</menu>

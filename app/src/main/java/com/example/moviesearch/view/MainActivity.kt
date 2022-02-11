@@ -1,7 +1,8 @@
 package com.example.moviesearch.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.MainActivityBinding
 
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.fragment_container, MoviesListFragment.newInstance())
                 .commitNow()
         }
     }

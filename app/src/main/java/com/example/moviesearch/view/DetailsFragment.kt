@@ -6,27 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviesearch.databinding.FragmentMoviesListBinding
+import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.viewmodel.MainViewModel
 
-class MoviesListFragment : Fragment() {
+
+class DetailsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MoviesListFragment()
+        fun newInstance() = DetailsFragment()
     }
 
     private lateinit var viewModel: MainViewModel
-    private var _binding: FragmentMoviesListBinding? = null
-
+    var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,5 +38,4 @@ class MoviesListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

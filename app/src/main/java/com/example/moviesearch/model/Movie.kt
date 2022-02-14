@@ -6,3 +6,14 @@ data class Movie(
     val genre: String = "drama",
     val release_date: String = "01.11.1997"
 )
+
+fun getMovies() : List<Movie> {
+    return listOf(
+        Movie("Star Wars 1", "Movie about...", "fantasy", "02.11.1997" ),
+        Movie("Star Wars 2", "Movie about...", "fantasy", "03.11.1998" ),
+        Movie("Star Wars 3", "Movie about...", "fantasy", "04.10.1999" ),
+        Movie("Star Wars 4", "Movie about...", "fantasy", "12.11.2000" ),
+        Movie("Star Wars 5", "Movie about...", "fantasy", "23.11.2001" ),
+        Movie("Star Wars 6", "Movie about...", "fantasy", "24.11.2002" )
+    )
+}

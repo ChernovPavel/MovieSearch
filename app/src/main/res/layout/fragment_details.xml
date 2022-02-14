@@ -4,7 +4,7 @@
     android:id="@+id/fragment_movie_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.DetailsFragment">
+    tools:context=".view.details.DetailsFragment">
 
     <TextView
         android:layout_width="match_parent"

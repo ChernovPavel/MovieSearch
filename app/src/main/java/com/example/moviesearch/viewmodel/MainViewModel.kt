@@ -7,7 +7,7 @@ import com.example.moviesearch.model.RepositoryImpl
 import java.lang.Thread.sleep
 
 class MainViewModel(
-    private val liveDataToObserve: MutableLiveData<Any> = MutableLiveData(),
+    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
     private val repositoryImpl: Repo = RepositoryImpl()
 ) : ViewModel() {
 
@@ -16,9 +16,10 @@ class MainViewModel(
     fun getMovieFromLocalSource() = getDataFromLocalSource()
 
     private fun getDataFromLocalSource() {
+        liveDataToObserve.value = AppState.Loading
         Thread {
             sleep(1000)
-            liveDataToObserve.postValue(repositoryImpl.getMovieFromLocalStorage())
+            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMovieFromLocalStorage()))
         }.start()
     }
 }

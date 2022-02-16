@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.view.details.DetailsFragment
+import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : Fragment() {
 
@@ -50,9 +54,12 @@ class ListFragment : Fragment() {
         binding.listFragmentRecyclerView.adapter = adapter
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
+        val observer = Observer<AppState> {
+            renderData(it)
+        }
+
         //назначаем наблюдателя, который при изменении даты будет обновлять список фильмов
-        viewModel.getLiveData()
-            .observe(viewLifecycleOwner, { adapter.setMovie(it as List<Movie>) })
+        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
 
         //запрашивам список фильмов из локального хранилища, чтобы liveData обновилась
         //и адаптер также обновил список фильмов в ресайклере
@@ -69,6 +76,27 @@ class ListFragment : Fragment() {
         adapter.removeListener()
         super.onDestroy()
     }
+
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success -> {
+                val movieData = appState.movieData
+                listFragmentLoadingLayout.visibility = View.GONE
+                adapter.setMovie(movieData)
+            }
+            is AppState.Loading -> {
+                listFragmentLoadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Error -> {
+                listFragmentLoadingLayout.visibility = View.GONE
+                Snackbar
+                    .make(fragment_list_view, "Error", Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.reload)) { viewModel.getMovieFromLocalSource() }
+                    .show()
+            }
+        }
+    }
+
 
     interface OnItemViewClickListener {
         fun onItemViewClick(movie: Movie)

@@ -4,10 +4,11 @@
 
     <dimen name="recycler_item_name_size">25sp</dimen>
     <dimen name="recycler_item_genre_size">15sp</dimen>
-
     <dimen name="recycler_item_line_margin_end">20dp</dimen>
 
-    <dimen name="details_fragment_movie_name_text_size">40sp</dimen>
-    <dimen name="details_fragment_default_text_size">32sp</dimen>
+    <dimen name="details_fragment_enlarged_text_size">36sp</dimen>
+    <dimen name="details_fragment_default_text_size">26sp</dimen>
+    <dimen name="details_fragment_secondary_text_size">15sp</dimen>
+
     <dimen name="details_fragment_margin_start">20dp</dimen>
 </resources>

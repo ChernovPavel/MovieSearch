@@ -8,14 +8,24 @@
     android:background="@color/white"
     tools:context=".view.details.DetailsFragment">
 
+    <ImageView
+        android:id="@+id/detail_fragment_movie_poster"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:background="@color/green"
+        android:src="@drawable/ic_baseline_camera_indoor_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_release_date"
+        android:contentDescription="@string/image_movie_poster"/>
+
     <TextView
         android:id="@+id/movie_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/details_fragment_margin_start"
-        android:layout_marginTop="20dp"
         android:gravity="start"
-        android:textSize="@dimen/details_fragment_movie_name_text_size"
+        android:textColor="@color/black"
+        android:textSize="@dimen/details_fragment_enlarged_text_size"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Титаник" />
@@ -24,30 +34,28 @@
         android:id="@+id/movie_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/details_fragment_margin_start"
-        android:textSize="@dimen/details_fragment_default_text_size"
+        android:textSize="@dimen/details_fragment_secondary_text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movie_name"
+        app:layout_constraintTop_toBottomOf="@+id/detail_fragment_movie_poster"
         tools:text="Фильм о ......" />
 
     <TextView
         android:id="@+id/movie_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/details_fragment_margin_start"
         android:textSize="@dimen/details_fragment_default_text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movie_description"
+        app:layout_constraintStart_toEndOf="@+id/detail_fragment_movie_poster"
+        app:layout_constraintTop_toTopOf="@+id/detail_fragment_movie_poster"
         tools:text="Драма" />
 
     <TextView
         android:id="@+id/movie_release_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/details_fragment_margin_start"
-        android:textSize="@dimen/details_fragment_default_text_size"
+        android:textSize="@dimen/details_fragment_secondary_text_size"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movie_genre"
+        app:layout_constraintTop_toBottomOf="@+id/movie_name"
         tools:text="01.02.1992" />
 
 

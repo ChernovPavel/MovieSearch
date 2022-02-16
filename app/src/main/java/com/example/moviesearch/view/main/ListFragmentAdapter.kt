@@ -9,13 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesearch.R
 import com.example.moviesearch.model.Movie
 
-class ListFragmentAdapter : RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
+class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnItemViewClickListener?) : RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
 
     private var movieData: List<Movie> = listOf()
 
     fun setMovie(data: List<Movie>) {
         movieData = data
         notifyDataSetChanged()
+    }
+
+    fun removeListener() {
+        onItemViewClickListener = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -38,11 +42,7 @@ class ListFragmentAdapter : RecyclerView.Adapter<ListFragmentAdapter.MainViewHol
         fun bind(movie: Movie) {
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = movie.name
             itemView.setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    movie.name,
-                    Toast.LENGTH_SHORT
-                ).show()
+                onItemViewClickListener?.onItemViewClick(movie)
             }
         }
     }

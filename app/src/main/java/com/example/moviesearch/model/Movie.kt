@@ -13,11 +13,12 @@ data class Movie(
 
 fun getMovies() : List<Movie> {
     return listOf(
-        Movie("Star Wars 1", "Movie about...", "fantasy", "02.11.1997" ),
-        Movie("Star Wars 2", "Movie about...", "fantasy", "03.11.1998" ),
-        Movie("Star Wars 3", "Movie about...", "fantasy", "04.10.1999" ),
-        Movie("Star Wars 4", "Movie about...", "fantasy", "12.11.2000" ),
-        Movie("Star Wars 5", "Movie about...", "fantasy", "23.11.2001" ),
-        Movie("Star Wars 6", "Movie about...", "fantasy", "24.11.2002" )
+        Movie("Star Wars", "Movie about...", "Фантастика", "02.11.1997" ),
+        Movie("Зеленая миля", "Movie about...", "Драма", "03.11.1999" ),
+        Movie("Побег из Шоушенка", "Movie about...", "Драма", "04.10.1994" ),
+        Movie("Список Шиндлера", "Movie about...", "Биография", "12.11.1993" ),
+        Movie("Форрест Гамп", "Movie about...", "Комедия", "23.11.1994" ),
+        Movie("1+1", "Movie about...", "Комедия", "24.11.2011" ),
+        Movie("Криминальное чтиво", "Movie about...", "Криминал", "24.09.1994" )
     )
 }

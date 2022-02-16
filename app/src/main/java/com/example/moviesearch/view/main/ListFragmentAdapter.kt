@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesearch.R
 import com.example.moviesearch.model.Movie
@@ -40,7 +39,9 @@ class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnIt
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = movie.name
+            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieName).text = movie.name
+            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieGenre).text = movie.genre
+            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieReleaseDate).text = movie.release_date
             itemView.setOnClickListener {
                 onItemViewClickListener?.onItemViewClick(movie)
             }

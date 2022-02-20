@@ -22,18 +22,20 @@ class ListFragment : Fragment() {
         fun newInstance() = ListFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
+    }
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
+
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, movie)
-                manager.beginTransaction()
-                    .add(R.id.fragment_container, DetailsFragment.newInstance(bundle))
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
+                    .add(R.id.fragment_container, DetailsFragment.newInstance(Bundle().apply {
+                        putParcelable(DetailsFragment.BUNDLE_EXTRA, movie)
+                    }))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }
@@ -52,7 +54,6 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.listFragmentRecyclerView.adapter = adapter
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val observer = Observer<AppState> {
             renderData(it)
@@ -89,14 +90,25 @@ class ListFragment : Fragment() {
             }
             is AppState.Error -> {
                 listFragmentLoadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(fragment_list_view, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.reload)) { viewModel.getMovieFromLocalSource() }
-                    .show()
+                fragmentListRootView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getMovieFromLocalSource() }
+                )
             }
         }
     }
 
+    private fun View.showSnackBar(
+        text: String,
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_INDEFINITE
+    ) {
+        Snackbar.make(this, text, length)
+            .setAction(actionText, action)
+            .show()
+    }
 
     interface OnItemViewClickListener {
         fun onItemViewClick(movie: Movie)

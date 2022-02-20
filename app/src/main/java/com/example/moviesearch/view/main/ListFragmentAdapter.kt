@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesearch.R
 import com.example.moviesearch.model.Movie
 
-class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnItemViewClickListener?) : RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
+class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnItemViewClickListener?) :
+    RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
 
     private var movieData: List<Movie> = listOf()
 
@@ -39,11 +40,14 @@ class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnIt
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieName).text = movie.name
-            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieGenre).text = movie.genre
-            itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieReleaseDate).text = movie.release_date
-            itemView.setOnClickListener {
-                onItemViewClickListener?.onItemViewClick(movie)
+            itemView.apply {
+                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieName).text = movie.name
+                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieGenre).text = movie.genre
+                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieReleaseDate).text =
+                    movie.release_date
+                setOnClickListener {
+                    onItemViewClickListener?.onItemViewClick(movie)
+                }
             }
         }
     }

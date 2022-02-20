@@ -110,6 +110,15 @@ class ListFragment : Fragment() {
             .show()
     }
 
+    //SnackBar без экшена
+    private fun View.showSnackBarWithoutAction(
+        text: String,
+        length: Int = Snackbar.LENGTH_SHORT
+    ) {
+        Snackbar.make(this, text, length)
+            .show()
+    }
+
     interface OnItemViewClickListener {
         fun onItemViewClick(movie: Movie)
     }

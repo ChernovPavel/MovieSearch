@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.MainActivityBinding
-import com.example.moviesearch.view.main.ListFragment
 import com.example.moviesearch.view.favorites.FavoritesMoviesFragment
+import com.example.moviesearch.view.main.ListFragment
 import com.example.moviesearch.view.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        if (savedInstanceState == null) {
+        savedInstanceState?.let {} ?: run {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance())
                 .commitNow()

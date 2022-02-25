@@ -31,7 +31,7 @@
         tools:text="Титаник" />
 
     <TextView
-        android:id="@+id/movie_description"
+        android:id="@+id/movie_overview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/details_fragment_secondary_text_size"

@@ -31,7 +31,7 @@ class DetailsFragment : Fragment() {
         //отображаем данные по фильму которые положили в переменную selectedItem при нажатии на item списка
         viewModel.selectedItem.observe(viewLifecycleOwner, { movie ->
             binding.movieName.text = movie.name
-            binding.movieDescription.text = movie.description
+            binding.movieOverview.text = movie.overview
             binding.movieGenre.text = movie.genre
             binding.movieReleaseDate.text = movie.release_date
         })

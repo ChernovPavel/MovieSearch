@@ -9,6 +9,7 @@ import com.example.moviesearch.model.MovieDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -24,7 +25,7 @@ class MovieLoader(
     fun loadMovie() =
         try {
             val uri =
-                URL("https://api.themoviedb.org/3/movie/${id}?api_key=5cc3b6d0f441200e25ccf12162000327&language=ru")
+                URL("https://api.themoviedb.org/3/movie/${id}?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru")
             val handler = Handler()
 
             Thread {
@@ -33,7 +34,6 @@ class MovieLoader(
                     urlConnection = (uri.openConnection() as HttpURLConnection).apply {
                         requestMethod = "GET"
                         readTimeout = 10000
-                        addRequestProperty("api_key", BuildConfig.MOVIE_API_KEY)
                     }
 
                     val bufferedReader =

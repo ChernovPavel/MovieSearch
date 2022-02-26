@@ -8,7 +8,6 @@ import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.model.MovieDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -22,7 +21,7 @@ class MovieLoader(
 ) {
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun loadMovie() {
+    fun loadMovie() =
         try {
             val uri =
                 URL("https://api.themoviedb.org/3/movie/${id}?api_key=5cc3b6d0f441200e25ccf12162000327&language=ru")
@@ -31,12 +30,14 @@ class MovieLoader(
             Thread {
                 lateinit var urlConnection: HttpURLConnection
                 try {
-                    urlConnection = uri.openConnection() as HttpURLConnection
-                    urlConnection.requestMethod = "GET"
-                    urlConnection.readTimeout = 10000
-                    urlConnection.addRequestProperty("api_key", BuildConfig.MOVIE_API_KEY)
+                    urlConnection = (uri.openConnection() as HttpURLConnection).apply {
+                        requestMethod = "GET"
+                        readTimeout = 10000
+                        addRequestProperty("api_key", BuildConfig.MOVIE_API_KEY)
+                    }
 
-                    val bufferedReader = BufferedReader(InputStreamReader(urlConnection.inputStream))
+                    val bufferedReader =
+                        BufferedReader(InputStreamReader(urlConnection.inputStream))
                     val response = getLines(bufferedReader)
                     val movieDTO: MovieDTO = Gson().fromJson(response, MovieDTO::class.java)
 
@@ -49,7 +50,7 @@ class MovieLoader(
                     e.printStackTrace()
                     listener.onFailed(e)
                 } finally {
-
+                    urlConnection.disconnect()
                 }
             }.start()
         } catch (e: MalformedURLException) {
@@ -57,7 +58,6 @@ class MovieLoader(
             e.printStackTrace()
             listener.onFailed(e)
         }
-    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun getLines(reader: BufferedReader): String {

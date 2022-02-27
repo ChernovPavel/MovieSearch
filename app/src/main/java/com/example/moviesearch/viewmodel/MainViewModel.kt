@@ -2,16 +2,20 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviesearch.model.*
+import com.example.moviesearch.model.ListMoviesDTO
+import com.example.moviesearch.model.MovieItem
+import com.example.moviesearch.model.Repo
+import com.example.moviesearch.model.RepositoryImpl
 import java.lang.Thread.sleep
 
 class MainViewModel(
     private val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData(),
-    private val liveInternetListMoviesToObserve: MutableLiveData<ListMoviesDTO> = MutableLiveData(),
+    private val internetLiveListMoviesToObserve: MutableLiveData<ListMoviesDTO> = MutableLiveData(),
     private val repositoryImpl: Repo = RepositoryImpl()
 ) : ViewModel() {
 
     fun getLiveData() = liveListMoviesToObserve
+    fun getInternetLiveData() = internetLiveListMoviesToObserve
 
     fun getMovieFromLocalSource() = getDataFromLocalSource()
 
@@ -25,19 +29,14 @@ class MainViewModel(
 
     val selectedItem: MutableLiveData<MovieItem> = MutableLiveData()
 
-    fun select(movie: Movie) {
+    fun select(movie: MovieItem) {
         selectedItem.value = movie
     }
 
-     val onLoadListListener: ListMoviesLoader.ListMoviesLoaderListener =
-        object : ListMoviesLoader.ListMoviesLoaderListener {
-            override fun onLoadedList(listMoviesDTO: ListMoviesDTO) {
+    fun setDataFromInternet(listMoviesDTO: ListMoviesDTO) {
+        Thread {
+            internetLiveListMoviesToObserve.postValue(listMoviesDTO)
+        }.start()
+    }
 
-                internetLiveListMoviesToObserve.postValue(listMoviesDTO)
-            }
-
-            override fun onFailedList(throwable: Throwable) {
-                //todo
-            }
-        }
 }

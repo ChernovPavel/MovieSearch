@@ -5,6 +5,7 @@ data class ListMoviesDTO(
 )
 
 data class MovieItem(
+    val id: Int,
     val title: String?,
     val release_date: String?,
     val vote_average: Double?

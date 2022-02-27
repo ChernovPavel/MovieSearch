@@ -1,16 +1,19 @@
 package com.example.moviesearch.view.main
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
-import com.example.moviesearch.model.Movie
+import com.example.moviesearch.model.ListMoviesDTO
+import com.example.moviesearch.model.MovieItem
 import com.example.moviesearch.view.details.DetailsFragment
+import com.example.moviesearch.view.details.MovieListLoader
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -28,8 +31,21 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
+
+    private val onLoadMovieListListener: MovieListLoader.MovieListLoaderListener =
+        object : MovieListLoader.MovieListLoaderListener {
+            override fun onLoadedList(listMoviesDTO: ListMoviesDTO) {
+                viewModel.setDataFromInternet(listMoviesDTO)
+            }
+
+            override fun onFailedList(throwable: Throwable) {
+                Snackbar.make(fragmentListRootView, getString(R.string.network_error),Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        }
+
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
-        override fun onItemViewClick(movie: Movie) {
+        override fun onItemViewClick(movie: MovieItem) {
             //кладем в переменную типа liveData выбранный фильм. Чтобы потом его достать в DetailsFragment
             viewModel.select(movie)
 
@@ -50,22 +66,16 @@ class ListFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.listFragmentRecyclerView.adapter = adapter
 
-        val observer = Observer<AppState> {
-            renderData(it)
-        }
+        val loader = MovieListLoader(onLoadMovieListListener)
+        loader.loadListMovies()
 
-        //назначаем наблюдателя, который при изменении даты будет обновлять список фильмов
-        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
-
-        //запрашивам список фильмов из локального хранилища, чтобы liveData обновилась
-        //и адаптер также обновил список фильмов в ресайклере
-        viewModel.getMovieFromLocalSource()
-
+        viewModel.getInternetLiveData().observe(viewLifecycleOwner) {adapter.setListMovie(it)}
     }
 
     override fun onDestroyView() {
@@ -125,6 +135,6 @@ class ListFragment : Fragment() {
      * А реализуется метод при создании адаптера (логика что делать по нажатию на элемент списка)
      */
     interface OnItemViewClickListener {
-        fun onItemViewClick(movie: Movie)
+        fun onItemViewClick(movie: MovieItem)
     }
 }

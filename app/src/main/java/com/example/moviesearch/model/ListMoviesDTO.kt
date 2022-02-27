@@ -7,5 +7,5 @@ data class ListMoviesDTO(
 data class MovieItem(
     val title: String?,
     val release_date: String?,
-    val genre: String? = "жанр норм"
+    val vote_average: Double?
 )

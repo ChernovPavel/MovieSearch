@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.model.ListMoviesDTO
-import com.example.moviesearch.model.MovieDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -16,8 +15,8 @@ import java.net.URL
 import java.util.stream.Collectors
 
 @RequiresApi(Build.VERSION_CODES.N)
-class ListMoviesLoader(
-    private val listener: ListMoviesLoaderListener,
+class MovieListLoader(
+    private val listener: MovieListLoaderListener,
 ) {
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -64,7 +63,7 @@ class ListMoviesLoader(
         return reader.lines().collect(Collectors.joining("\n"))
     }
 
-    interface ListMoviesLoaderListener {
+    interface MovieListLoaderListener {
         fun onLoadedList(listMoviesDTO: ListMoviesDTO)
         fun onFailedList(throwable: Throwable)
     }

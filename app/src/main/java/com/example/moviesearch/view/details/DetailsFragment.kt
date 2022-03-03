@@ -21,6 +21,9 @@ class DetailsFragment : Fragment() {
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
+    // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
+    private val viewModel: MainViewModel by activityViewModels()
+
     //реализация интерфейса объявленного в классе MovieLoader
     private val onLoadListener: MovieLoader.MovieLoaderListener =
         object : MovieLoader.MovieLoaderListener {
@@ -29,7 +32,11 @@ class DetailsFragment : Fragment() {
             }
 
             override fun onFailed(throwable: Throwable) {
-                Snackbar.make(fragmentMovieDetails, getString(R.string.network_error),Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    fragmentMovieDetails,
+                    getString(R.string.network_error),
+                    Snackbar.LENGTH_LONG
+                )
                     .show()
                 parentFragmentManager.popBackStack()
             }
@@ -47,9 +54,6 @@ class DetailsFragment : Fragment() {
         })
     }
 
-    // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
-    private val viewModel: MainViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -61,13 +65,14 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.selectedItem.observe(viewLifecycleOwner, { val movieBundle = it
+        viewModel.selectedItem.observe(viewLifecycleOwner, {
+            val movieBundle = it
 
-        binding.detailsFragmentLoadingLayout.visibility = View.VISIBLE
-        binding.fragmentMovieDetails.visibility = View.GONE
+            binding.detailsFragmentLoadingLayout.visibility = View.VISIBLE
+            binding.fragmentMovieDetails.visibility = View.GONE
 
-        val loader = MovieLoader(onLoadListener, movieBundle.id)
-        loader.loadMovie()
+            val loader = MovieLoader(onLoadListener, movieBundle.id)
+            loader.loadMovie()
         })
     }
 

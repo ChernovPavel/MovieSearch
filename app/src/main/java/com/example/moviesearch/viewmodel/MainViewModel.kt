@@ -10,8 +10,8 @@ import java.lang.Thread.sleep
 
 class MainViewModel : ViewModel() {
 
-    private val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData(),
-    private val internetLiveListMoviesToObserve: MutableLiveData<ListMoviesDTO> = MutableLiveData(),
+    private val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
+    private val internetLiveListMoviesToObserve: MutableLiveData<ListMoviesDTO> = MutableLiveData()
     private val repositoryImpl: Repo = RepositoryImpl()
 
     fun getLiveData() = liveListMoviesToObserve

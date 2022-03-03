@@ -15,6 +15,20 @@ import com.example.moviesearch.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_details.*
 
+const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
+const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
+const val DETAILS_INTENT_EMPTY_EXTRA = "INTENT IS EMPTY"
+const val DETAILS_DATA_EMPTY_EXTRA = "DATA IS EMPTY"
+const val DETAILS_RESPONSE_EMPTY_EXTRA = "RESPONSE IS EMPTY"
+const val DETAILS_REQUEST_ERROR_EXTRA = "REQUEST ERROR"
+const val DETAILS_REQUEST_ERROR_MESSAGE_EXTRA = "REQUEST ERROR MESSAGE"
+const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
+const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
+const val DETAILS_TITLE_EXTRA = "TITLE"
+const val DETAILS_OVERVIEW_EXTRA = "OVERVIEW"
+const val DETAILS_RELEASE_DATE_EXTRA= "RELEASE_DATE"
+const val DETAILS_GENRES_EXTRA= "GENRES"
+private const val PROCESS_ERROR = "Обработка ошибки"
 
 class DetailsFragment : Fragment() {
 

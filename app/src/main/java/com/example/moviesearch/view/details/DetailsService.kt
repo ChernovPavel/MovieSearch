@@ -28,8 +28,12 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
         if (intent == null) {
             onEmptyIntent()
         } else {
-            val id = intent.getIntExtra(MOVIE_ID, 1)
-            loadMovie(id)
+            val id = intent.getIntExtra(MOVIE_ID, -1)
+            if (id == -1) {
+                onEmptyData()
+            } else {
+                loadMovie(id)
+            }
         }
     }
 
@@ -39,7 +43,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
             val uri =
                 URL("https://api.themoviedb.org/3/movie/${movieId}?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru")
 
-            lateinit var urlConnection: HttpURLConnection
+            var urlConnection: HttpURLConnection? = null
             try {
                 urlConnection = (uri.openConnection() as HttpURLConnection).apply {
                     requestMethod = REQUEST_GET
@@ -55,7 +59,7 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
             } catch (e: Exception) {
                 onErrorRequest(e.message ?: "Empty error")
             } finally {
-                urlConnection.disconnect()
+                urlConnection?.disconnect()
             }
         } catch (e: MalformedURLException) {
             onMalformedURL()
@@ -71,26 +75,13 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
         if (movieDTO == null) {
             onEmptyResponse()
         } else {
-            onSuccessResponse(
-                movieDTO.title,
-                movieDTO.overview,
-                movieDTO.release_date,
-                movieDTO.genres?.get(0)?.name
-            )
+            onSuccessResponse(movieDTO)
         }
     }
 
-    private fun onSuccessResponse(
-        title: String?,
-        overview: String?,
-        release_date: String?,
-        genres: String?
-    ) {
+    private fun onSuccessResponse(movieDTO: MovieDTO) {
         putLoadResult(DETAILS_RESPONSE_SUCCESS_EXTRA)
-        broadcastIntent.putExtra(DETAILS_TITLE_EXTRA, title)
-        broadcastIntent.putExtra(DETAILS_OVERVIEW_EXTRA, overview)
-        broadcastIntent.putExtra(DETAILS_RELEASE_DATE_EXTRA, release_date)
-        broadcastIntent.putExtra(DETAILS_GENRES_EXTRA, genres)
+        broadcastIntent.putExtra(DETAILS_EXTRA, movieDTO)
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
     }
 

@@ -1,5 +1,9 @@
 package com.example.moviesearch.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +12,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.moviesearch.R
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.moviesearch.databinding.FragmentDetailsBinding
+import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -24,10 +29,7 @@ const val DETAILS_REQUEST_ERROR_EXTRA = "REQUEST ERROR"
 const val DETAILS_REQUEST_ERROR_MESSAGE_EXTRA = "REQUEST ERROR MESSAGE"
 const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
 const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
-const val DETAILS_TITLE_EXTRA = "TITLE"
-const val DETAILS_OVERVIEW_EXTRA = "OVERVIEW"
-const val DETAILS_RELEASE_DATE_EXTRA= "RELEASE_DATE"
-const val DETAILS_GENRES_EXTRA= "GENRES"
+const val DETAILS_EXTRA = "DETAILS_MOVIE_DTO"
 private const val PROCESS_ERROR = "Обработка ошибки"
 
 class DetailsFragment : Fragment() {
@@ -38,25 +40,23 @@ class DetailsFragment : Fragment() {
     // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
     private val viewModel: MainViewModel by activityViewModels()
 
-    //реализация интерфейса объявленного в классе MovieLoader
-    private val onLoadListener: MovieLoader.MovieLoaderListener =
-        object : MovieLoader.MovieLoaderListener {
-            override fun onLoaded(movieDTO: MovieDTO) {
-                displayMovie(movieDTO)
-            }
-
-            override fun onFailed(throwable: Throwable) {
-                Snackbar.make(
-                    fragmentMovieDetails,
-                    getString(R.string.network_error),
-                    Snackbar.LENGTH_LONG
-                )
-                    .show()
-                parentFragmentManager.popBackStack()
+    private val loadResultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
+                DETAILS_INTENT_EMPTY_EXTRA -> fragmentMovieDetails.showSnackBar("test")
+                DETAILS_DATA_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_RESPONSE_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_REQUEST_ERROR_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_URL_MALFORMED_EXTRA -> TODO(PROCESS_ERROR)
+                DETAILS_RESPONSE_SUCCESS_EXTRA -> intent.getParcelableExtra<MovieDTO>(DETAILS_EXTRA)
+                    ?.let { renderData(it) }
+                else -> TODO(PROCESS_ERROR)
             }
         }
+    }
 
-    private fun displayMovie(movieDTO: MovieDTO) {
+    private fun renderData(movieDTO: MovieDTO) {
         with(binding, {
             detailsFragmentLoadingLayout.visibility = View.GONE
             fragmentMovieDetails.visibility = View.VISIBLE
@@ -66,6 +66,23 @@ class DetailsFragment : Fragment() {
             movieGenre.text = movieDTO.genres?.get(0)?.name
             movieReleaseDate.text = movieDTO.release_date
         })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.let {
+            LocalBroadcastManager.getInstance(it).registerReceiver(
+                loadResultReceiver,
+                IntentFilter(DETAILS_INTENT_FILTER)
+            )
+        }
+    }
+
+    override fun onDestroy() {
+        context?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultReceiver)
+        }
+        super.onDestroy()
     }
 
     override fun onCreateView(
@@ -80,18 +97,30 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.selectedItem.observe(viewLifecycleOwner, {
-            val movieBundle = it
-
-            binding.detailsFragmentLoadingLayout.visibility = View.VISIBLE
-            binding.fragmentMovieDetails.visibility = View.GONE
-
-            val loader = MovieLoader(onLoadListener, movieBundle.id)
-            loader.loadMovie()
+            val movie = it
+            getMovie(movie)
         })
+    }
+
+    private fun getMovie(movie: Movie) {
+        detailsFragmentLoadingLayout.visibility = View.VISIBLE
+        fragmentMovieDetails.visibility = View.GONE
+
+        val intent = Intent(requireContext(), DetailsService::class.java).apply {
+            putExtra(MOVIE_ID, movie.id)
+        }
+        requireContext().startService(intent)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun View.showSnackBar(
+        text: String
+    ) {
+        Snackbar.make(this, text, Snackbar.LENGTH_SHORT)
+            .show()
     }
 }

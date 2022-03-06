@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
@@ -44,15 +45,15 @@ class DetailsFragment : Fragment() {
     private val loadResultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
-                DETAILS_INTENT_EMPTY_EXTRA -> showToast("не передан id фильма")
-                DETAILS_DATA_EMPTY_EXTRA -> showToast("невалидный id фильма")
-                DETAILS_RESPONSE_EMPTY_EXTRA -> showToast("нет данных по фильму")
-                DETAILS_REQUEST_ERROR_EXTRA -> showToast("невалидные данные по фильму")
-                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> showToast("невалидные данные по фильму")
-                DETAILS_URL_MALFORMED_EXTRA -> showToast("невалидный URL")
+                DETAILS_INTENT_EMPTY_EXTRA -> showToast(getString(R.string.movie_id_not_sent))
+                DETAILS_DATA_EMPTY_EXTRA -> showToast(getString(R.string.invalid_movie_id))
+                DETAILS_RESPONSE_EMPTY_EXTRA -> showToast(getString(R.string.no_data_for_movie))
+                DETAILS_REQUEST_ERROR_EXTRA -> showToast(getString(R.string.invalid_data_for_movie))
+                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> showToast(getString(R.string.invalid_data_for_movie))
+                DETAILS_URL_MALFORMED_EXTRA -> showToast(getString(R.string.invalid_URL))
                 DETAILS_RESPONSE_SUCCESS_EXTRA -> intent.getParcelableExtra<MovieDTO>(DETAILS_EXTRA)
                     ?.let { renderData(it) }
-                else -> TODO(PROCESS_ERROR)
+                else -> showToast(getString(R.string.network_error))
             }
         }
     }

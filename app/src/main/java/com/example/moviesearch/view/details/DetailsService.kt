@@ -25,16 +25,14 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onHandleIntent(intent: Intent?) {
-        if (intent == null) {
-            onEmptyIntent()
-        } else {
-            val id = intent.getIntExtra(MOVIE_ID, -1)
+        intent?.let {
+            val id = it.getIntExtra(MOVIE_ID, -1)
             if (id == -1) {
                 onEmptyData()
             } else {
                 loadMovie(id)
             }
-        }
+        } ?: onEmptyIntent()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -72,11 +70,9 @@ class DetailsService(name: String = "DetailService") : IntentService(name) {
     }
 
     private fun onResponse(movieDTO: MovieDTO?) {
-        if (movieDTO == null) {
-            onEmptyResponse()
-        } else {
-            onSuccessResponse(movieDTO)
-        }
+        movieDTO?.let {
+            onSuccessResponse(it)
+        } ?: onEmptyResponse()
     }
 
     private fun onSuccessResponse(movieDTO: MovieDTO) {

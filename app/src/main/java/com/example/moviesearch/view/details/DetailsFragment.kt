@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +15,16 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_details.*
+import okhttp3.*
+import java.io.IOException
 
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
@@ -33,6 +37,7 @@ const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
 const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
 const val DETAILS_EXTRA = "DETAILS_MOVIE_DTO"
 private const val PROCESS_ERROR = "Обработка ошибки"
+private const val MAIN_LINK = "https://api.themoviedb.org/3/movie/"
 
 class DetailsFragment : Fragment() {
 
@@ -63,10 +68,18 @@ class DetailsFragment : Fragment() {
             detailsFragmentLoadingLayout.visibility = View.GONE
             fragmentMovieDetails.visibility = View.VISIBLE
 
-            movieName.text = movieDTO.title
-            movieOverview.text = movieDTO.overview
-            movieGenre.text = movieDTO.genres?.get(0)?.name
-            movieReleaseDate.text = movieDTO.release_date
+            if (movieDTO.title == null ||
+                movieDTO.overview == null ||
+                movieDTO.release_date == null ||
+                movieDTO.genres?.get(0)?.name == null
+            ) {
+                TODO(PROCESS_ERROR)
+            } else {
+                movieName.text = movieDTO.title
+                movieOverview.text = movieDTO.overview
+                movieGenre.text = movieDTO.genres[0].name
+                movieReleaseDate.text = movieDTO.release_date
+            }
         })
     }
 
@@ -108,10 +121,32 @@ class DetailsFragment : Fragment() {
         detailsFragmentLoadingLayout.visibility = View.VISIBLE
         fragmentMovieDetails.visibility = View.GONE
 
-        val intent = Intent(requireContext(), DetailsService::class.java).apply {
-            putExtra(MOVIE_ID, movie.id)
-        }
-        requireContext().startService(intent)
+        val client = OkHttpClient()
+        val builder: Request.Builder = Request.Builder()
+        builder.url(MAIN_LINK + movie.id + "?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru")
+        val request: Request = builder.build()
+        val call: Call = client.newCall(request)
+
+        call.enqueue(object : Callback {
+
+            val handler: Handler = Handler()
+
+            override fun onResponse(call: Call?, response: Response) {
+                val serverResponse: String? = response.body()?.string()
+
+                if (response.isSuccessful && serverResponse != null) {
+                    handler.post {
+                        renderData(Gson().fromJson(serverResponse, MovieDTO::class.java))
+                    }
+                } else {
+                    TODO(PROCESS_ERROR)
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     override fun onDestroyView() {

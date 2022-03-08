@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.moviesearch.BuildConfig
+import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -52,7 +53,16 @@ class DetailsFragment : Fragment() {
             is AppState.Error -> {
                 binding.detailsFragmentLoadingLayout.visibility = View.GONE
                 binding.fragmentMovieDetails.visibility = View.VISIBLE
-                Toast.makeText(context, "Ошибка получения данных по фильму", Toast.LENGTH_SHORT).show()
+                fragmentMovieDetails.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    {
+                        viewModel.getMovieFromRemoteSource(
+                            MAIN_LINK + movieBundle + "?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru"
+                        )
+                    })
+//                Toast.makeText(context, "Ошибка получения данных по фильму", Toast.LENGTH_SHORT)
+//                    .show()
             }
         }
     }

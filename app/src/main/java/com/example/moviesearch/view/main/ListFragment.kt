@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
@@ -99,18 +100,6 @@ class ListFragment : Fragment() {
             }
         }
     }
-
-    private fun View.showSnackBar(
-        text: String,
-        actionText: String,
-        action: (View) -> Unit,
-        length: Int = Snackbar.LENGTH_INDEFINITE
-    ) {
-        Snackbar.make(this, text, length)
-            .setAction(actionText, action)
-            .show()
-    }
-
 
     /**
      * интерфейс клика по айтему.

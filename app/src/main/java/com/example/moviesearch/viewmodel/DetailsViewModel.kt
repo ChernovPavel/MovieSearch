@@ -2,11 +2,11 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
 import com.example.moviesearch.repository.DetailsRepositoryImpl
 import com.example.moviesearch.repository.RemoteDataSource
+import com.example.moviesearch.utils.convertDtoToModel
 import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.Callback
@@ -55,17 +55,5 @@ class DetailsViewModel : ViewModel() {
         } else {
             AppState.Success(convertDtoToModel(movieDTO))
         }
-    }
-
-    private fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
-        return listOf(
-            Movie(
-                movieDTO.id!!,
-                movieDTO.title!!,
-                movieDTO.overview!!,
-                movieDTO.genres?.get(0)?.name!!,
-                movieDTO.release_date!!
-            )
-        )
     }
 }

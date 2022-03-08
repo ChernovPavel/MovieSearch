@@ -14,7 +14,6 @@ import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : Fragment() {
@@ -31,7 +30,6 @@ class ListFragment : Fragment() {
 
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
-            //кладем в переменную типа liveData выбранный фильм. Чтобы потом его достать в DetailsFragment
 
             activity?.supportFragmentManager?.apply {
                 val bundle = Bundle()

@@ -12,10 +12,4 @@
     <string name="image_movie_poster">image_movie_poster</string>
     <string name="reload">Reload</string>
     <string name="error">Error</string>
-    <string name="network_error">Something went wrong</string>
-    <string name="movie_id_not_sent">не передан id фильма</string>
-    <string name="invalid_movie_id">невалидный id фильма</string>
-    <string name="no_data_for_movie">нет данных по фильму</string>
-    <string name="invalid_data_for_movie">невалидные данные по фильму</string>
-    <string name="invalid_URL">невалидный URL</string>
 </resources>

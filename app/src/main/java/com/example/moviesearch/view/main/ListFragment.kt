@@ -31,7 +31,6 @@ class ListFragment : Fragment() {
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
             //кладем в переменную типа liveData выбранный фильм. Чтобы потом его достать в DetailsFragment
-            viewModel.select(movie)
 
             activity?.supportFragmentManager?.apply {
                 val bundle = Bundle()

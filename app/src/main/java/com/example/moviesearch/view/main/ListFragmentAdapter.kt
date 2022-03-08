@@ -41,7 +41,7 @@ class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnIt
 
         fun bind(movie: Movie) {
             itemView.apply {
-                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieName).text = movie.name
+                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieName).text = movie.title
                 findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieGenre).text = movie.genre
                 findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieReleaseDate).text =
                     movie.release_date

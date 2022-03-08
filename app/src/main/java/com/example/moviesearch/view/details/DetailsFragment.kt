@@ -61,8 +61,6 @@ class DetailsFragment : Fragment() {
                             MAIN_LINK + movieBundle + "?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru"
                         )
                     })
-//                Toast.makeText(context, "Ошибка получения данных по фильму", Toast.LENGTH_SHORT)
-//                    .show()
             }
         }
     }

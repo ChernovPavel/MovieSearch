@@ -34,8 +34,10 @@ class ListFragment : Fragment() {
             viewModel.select(movie)
 
             activity?.supportFragmentManager?.apply {
+                val bundle = Bundle()
+                bundle.putInt(DetailsFragment.BUNDLE_EXTRA, movie.id)
                 beginTransaction()
-                    .add(R.id.fragment_container, DetailsFragment())
+                    .add(R.id.fragment_container, DetailsFragment.newInstance(bundle))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }

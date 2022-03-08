@@ -44,22 +44,12 @@ class DetailsFragment : Fragment() {
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
-    // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
-    private val viewModel: MainViewModel by activityViewModels()
-
-    private val loadResultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
-                DETAILS_INTENT_EMPTY_EXTRA -> showToast(getString(R.string.movie_id_not_sent))
-                DETAILS_DATA_EMPTY_EXTRA -> showToast(getString(R.string.invalid_movie_id))
-                DETAILS_RESPONSE_EMPTY_EXTRA -> showToast(getString(R.string.no_data_for_movie))
-                DETAILS_REQUEST_ERROR_EXTRA -> showToast(getString(R.string.invalid_data_for_movie))
-                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> showToast(getString(R.string.invalid_data_for_movie))
-                DETAILS_URL_MALFORMED_EXTRA -> showToast(getString(R.string.invalid_URL))
-                DETAILS_RESPONSE_SUCCESS_EXTRA -> intent.getParcelableExtra<MovieDTO>(DETAILS_EXTRA)
-                    ?.let { renderData(it) }
-                else -> showToast(getString(R.string.network_error))
-            }
+    companion object {
+        const val BUNDLE_EXTRA = "movieId"
+        fun newInstance(bundle: Bundle): DetailsFragment {
+            val fragment = DetailsFragment()
+            fragment.arguments = bundle
+            return fragment
         }
     }
 
@@ -111,37 +101,9 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.selectedItem.observe(viewLifecycleOwner, {
-            val movie = it
-            getMovie(movie)
-        })
-    }
-
-    private fun getMovie(movie: Movie) {
-        detailsFragmentLoadingLayout.visibility = View.VISIBLE
-        fragmentMovieDetails.visibility = View.GONE
-
-        val client = OkHttpClient()
-        val builder: Request.Builder = Request.Builder()
-        builder.url(MAIN_LINK + movie.id + "?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru")
-        val request: Request = builder.build()
-        val call: Call = client.newCall(request)
-
-        call.enqueue(object : Callback {
-
-            val handler: Handler = Handler()
-
-            override fun onResponse(call: Call?, response: Response) {
-                val serverResponse: String? = response.body()?.string()
-
-                if (response.isSuccessful && serverResponse != null) {
-                    handler.post {
-                        renderData(Gson().fromJson(serverResponse, MovieDTO::class.java))
-                    }
-                } else {
-                    TODO(PROCESS_ERROR)
-                }
-            }
+        arguments?.getInt(BUNDLE_EXTRA)?.let { id ->
+            movieBundle = id
+        }
 
             override fun onFailure(call: Call, e: IOException) {
                 TODO("Not yet implemented")

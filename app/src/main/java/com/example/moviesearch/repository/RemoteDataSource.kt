@@ -1,15 +1,23 @@
 package com.example.moviesearch.repository
 
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.example.moviesearch.BuildConfig
+import com.example.moviesearch.model.MovieDTO
+import com.google.gson.GsonBuilder
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteDataSource {
+    private val movieApi = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org/")
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder().setLenient().create()
+            )
+        )
+        .build().create(MovieAPI::class.java)
 
-    fun getMovieDetails(requestLink: String, callback: Callback) {
-        val builder: Request.Builder = Request.Builder().apply {
-            url(requestLink)
-        }
-        OkHttpClient().newCall(builder.build()).enqueue(callback)
+    fun getMovieDetails(id: Int, callback: Callback<MovieDTO>) {
+        movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY).enqueue(callback)
     }
 }

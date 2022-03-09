@@ -1,10 +1,10 @@
 package com.example.moviesearch.repository
 
-import okhttp3.Callback
+import com.example.moviesearch.model.MovieDTO
 
 class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) : DetailsRepository {
 
-    override fun getMovieDetailsFromServer(requestLink: String, callback: Callback) {
-        remoteDataSource.getMovieDetails(requestLink, callback)
+    override fun getMovieDetailsFromServer(id: Int, callback: retrofit2.Callback<MovieDTO>) {
+        remoteDataSource.getMovieDetails(id, callback)
     }
 }

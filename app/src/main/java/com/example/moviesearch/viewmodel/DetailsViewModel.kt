@@ -7,33 +7,26 @@ import com.example.moviesearch.repository.DetailsRepository
 import com.example.moviesearch.repository.DetailsRepositoryImpl
 import com.example.moviesearch.repository.RemoteDataSource
 import com.example.moviesearch.utils.convertDtoToModel
-import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
 
 private const val SERVER_ERROR = "Ошибка сервера"
+private const val REQUEST_ERROR = "Ошибка запроса на сервер"
 private const val CORRUPTED_DATA = "Неполные данные"
 
 class DetailsViewModel : ViewModel() {
-    private val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
+    val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
     private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
 
-    fun getLiveData() = detailsLiveData
-
-    fun getMovieFromRemoteSource(requestLink: String) {
+    fun getMovieFromAPI(movieId: Int) {
         detailsLiveData.value = AppState.Loading
-        detailsRepositoryImpl.getMovieDetailsFromServer(requestLink, callback)
+        detailsRepositoryImpl.getMovieDetailsFromServer(movieId, callback)
     }
 
-    private val callback = object : Callback {
-        override fun onFailure(call: Call?, response: IOException) {
-
-        }
-
-        override fun onResponse(call: Call?, response: Response) {
-            val serverResponse: String? = response.body()?.string()
+    private val callback = object : retrofit2.Callback<MovieDTO> {
+        override fun onResponse(
+            call: retrofit2.Call<MovieDTO>,
+            response: retrofit2.Response<MovieDTO>
+        ) {
+            val serverResponse: MovieDTO? = response.body()
             detailsLiveData.postValue(
                 if (response.isSuccessful && serverResponse != null) {
                     checkResponse(serverResponse)
@@ -42,10 +35,13 @@ class DetailsViewModel : ViewModel() {
                 }
             )
         }
+
+        override fun onFailure(call: retrofit2.Call<MovieDTO>, t: Throwable) {
+            detailsLiveData.postValue(AppState.Error(Throwable(t.message ?: REQUEST_ERROR)))
+        }
     }
 
-    private fun checkResponse(serverResponse: String): AppState {
-        val movieDTO: MovieDTO = Gson().fromJson(serverResponse, MovieDTO::class.java)
+    private fun checkResponse(movieDTO: MovieDTO): AppState {
         return if (movieDTO.title == null ||
             movieDTO.overview == null ||
             movieDTO.release_date == null ||

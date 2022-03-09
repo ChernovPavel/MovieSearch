@@ -1,7 +1,7 @@
 package com.example.moviesearch.repository
 
-import okhttp3.Callback
+import com.example.moviesearch.model.MovieDTO
 
 interface DetailsRepository {
-    fun getMovieDetailsFromServer(requestLink: String, callback: Callback)
+    fun getMovieDetailsFromServer(id: Int, callback: retrofit2.Callback<MovieDTO>)
 }

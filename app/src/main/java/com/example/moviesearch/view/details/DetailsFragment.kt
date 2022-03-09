@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
@@ -17,13 +16,11 @@ import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 
-private const val MAIN_LINK = "https://api.themoviedb.org/3/movie/"
-
 class DetailsFragment : Fragment() {
 
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-    private var movieBundle: Int = -1
+    private var movieId: Int = -1
     private val viewModel: DetailsViewModel by activityViewModels()
 
     companion object {
@@ -36,9 +33,6 @@ class DetailsFragment : Fragment() {
     }
 
     private fun renderData(appState: AppState) {
-
-        detailsFragmentLoadingLayout.visibility = View.GONE
-        fragmentMovieDetails.visibility = View.VISIBLE
 
         when (appState) {
             is AppState.Success -> {
@@ -57,9 +51,7 @@ class DetailsFragment : Fragment() {
                     getString(R.string.error),
                     getString(R.string.reload),
                     {
-                        viewModel.getMovieFromRemoteSource(
-                            MAIN_LINK + movieBundle + "?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru"
-                        )
+                        viewModel.getMovieFromAPI(movieId)
                     })
             }
         }
@@ -84,13 +76,10 @@ class DetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        movieId = arguments?.getInt(BUNDLE_EXTRA) ?: -1
 
-        arguments?.getInt(BUNDLE_EXTRA)?.let { id ->
-            movieBundle = id
-        }
-
-        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
-        viewModel.getMovieFromRemoteSource(MAIN_LINK + movieBundle + "?api_key=${BuildConfig.MOVIE_API_KEY}&language=ru")
+        viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
+        viewModel.getMovieFromAPI(movieId)
     }
 
     override fun onDestroyView() {

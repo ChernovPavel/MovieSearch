@@ -10,7 +10,8 @@ fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
             movieDTO.title!!,
             movieDTO.overview!!,
             movieDTO.genres?.get(0)?.name!!,
-            movieDTO.release_date!!
+            movieDTO.release_date!!,
+            movieDTO.poster_path
         )
     )
 }

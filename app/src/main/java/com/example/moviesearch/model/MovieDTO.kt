@@ -9,7 +9,8 @@ data class MovieDTO(
     val title: String?,
     val overview: String?,
     val release_date: String?,
-    val genres: List<Genres>?
+    val genres: List<Genres>?,
+    val poster_path: String?
 ) : Parcelable
 
 @Parcelize

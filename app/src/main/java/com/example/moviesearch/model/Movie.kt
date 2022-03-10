@@ -9,7 +9,8 @@ data class Movie(
     val title: String,
     val overview: String,
     val release_date: String,
-    val genre: String
+    val genre: String,
+    val poster_path: String? = null
 ) : Parcelable
 
 fun getMovies() = listOf(

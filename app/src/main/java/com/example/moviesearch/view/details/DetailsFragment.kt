@@ -14,6 +14,7 @@ import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment() {
@@ -63,6 +64,11 @@ class DetailsFragment : Fragment() {
             movieOverview.text = movie.overview
             movieGenre.text = movie.genre
             movieReleaseDate.text = movie.release_date
+
+            Picasso
+                .get()
+                .load("https://image.tmdb.org/t/p/w500${movie.poster_path}?language=ru")
+                .into(detailFragmentMoviePoster)
         }
     }
 

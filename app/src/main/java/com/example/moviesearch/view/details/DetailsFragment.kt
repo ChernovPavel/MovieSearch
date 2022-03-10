@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.RectangleTransformation
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
@@ -68,6 +69,7 @@ class DetailsFragment : Fragment() {
             Picasso
                 .get()
                 .load("https://image.tmdb.org/t/p/w500${movie.poster_path}?language=ru")
+                .transform(RectangleTransformation())
                 .into(detailFragmentMoviePoster)
         }
     }

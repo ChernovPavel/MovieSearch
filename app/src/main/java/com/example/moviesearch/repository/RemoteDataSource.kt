@@ -2,6 +2,7 @@ package com.example.moviesearch.repository
 
 import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.model.MovieDTO
+import com.example.moviesearch.model.MoviesResponse
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,6 +25,10 @@ class RemoteDataSource {
 
     fun getMovieDetails(id: Int, callback: Callback<MovieDTO>) {
         movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY).enqueue(callback)
+    }
+
+    fun getListTopMovies(callback: Callback<MoviesResponse>) {
+        movieApi.getTopMovies(BuildConfig.MOVIE_API_KEY).enqueue(callback)
     }
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {

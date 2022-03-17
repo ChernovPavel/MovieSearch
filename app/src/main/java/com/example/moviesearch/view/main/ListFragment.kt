@@ -55,16 +55,12 @@ class ListFragment : Fragment() {
 
         binding.listFragmentRecyclerView.adapter = adapter
 
-        val observer = Observer<AppState> {
-            renderData(it)
-        }
-
         //назначаем наблюдателя, который при изменении даты будет обновлять список фильмов
-        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
+        viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner, {renderData(it)})
 
         //запрашивам список фильмов из локального хранилища, чтобы liveData обновилась
         //и адаптер также обновил список фильмов в ресайклере
-        viewModel.getMovieFromLocalSource()
+        viewModel.getListTopMoviesFromAPI()
 
     }
 
@@ -93,7 +89,7 @@ class ListFragment : Fragment() {
                 fragmentListRootView.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
-                    { viewModel.getMovieFromLocalSource() }
+                    { viewModel.getListTopMoviesFromAPI() }
                 )
             }
         }

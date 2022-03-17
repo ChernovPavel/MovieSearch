@@ -1,12 +1,14 @@
 package com.example.moviesearch.repository
 
-import com.example.moviesearch.model.Movie
+import com.example.moviesearch.model.MoviesResponse
 import com.example.moviesearch.model.getMovies
+import retrofit2.Callback
 
-class MainRepositoryImpl : MainRepo {
-    override fun getMovieFromServer(): Movie {
-        return Movie(1, "Титаник", "About", "drama", "01.01.2001")
-    }
+class MainRepositoryImpl(private val remoteDataSource: RemoteDataSource) : MainRepo {
 
     override fun getMovieFromLocalStorage() = getMovies()
+
+    override fun getTopMoviesFromServer(callback: Callback<MoviesResponse>) {
+        remoteDataSource.getListTopMovies(callback)
+    }
 }

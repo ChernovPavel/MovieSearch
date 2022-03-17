@@ -11,7 +11,6 @@ import com.example.moviesearch.databinding.MainActivityBinding
 import com.example.moviesearch.view.favorites.FavoritesMoviesFragment
 import com.example.moviesearch.view.main.ListFragment
 import com.example.moviesearch.view.settings.SettingsFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 

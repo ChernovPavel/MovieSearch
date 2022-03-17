@@ -44,7 +44,8 @@ class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnIt
         fun bind(movie: Movie) {
             itemView.apply {
                 mainFragmentRecyclerItemMovieName.text = movie.title
-                mainFragmentRecyclerItemMovieGenre.text = movie.genre
+                mainFragmentRecyclerItemMovieVoteAverage.text =
+                    String.format("Рейтинг: %s", movie.vote_average.toString())
                 mainFragmentRecyclerItemMovieReleaseDate.text = movie.release_date
                 setOnClickListener {
                     onItemViewClickListener?.onItemViewClick(movie)

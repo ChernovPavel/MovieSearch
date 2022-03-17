@@ -9,7 +9,6 @@ import com.example.moviesearch.repository.RemoteDataSource
 import com.example.moviesearch.utils.convertMoviesResponseToModel
 import retrofit2.Call
 import retrofit2.Response
-import java.lang.Thread.sleep
 
 private const val SERVER_ERROR = "Ошибка сервера"
 private const val REQUEST_ERROR = "Ошибка запроса на сервер"
@@ -20,17 +19,7 @@ class MainViewModel : ViewModel() {
     val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
     private val repositoryImpl: MainRepo = MainRepositoryImpl(RemoteDataSource())
 
-    fun getMovieFromLocalSource() = getDataFromLocalSource()
-
-    private fun getDataFromLocalSource() {
-        liveListMoviesToObserve.value = AppState.Loading
-        Thread {
-            sleep(1000)
-            liveListMoviesToObserve.postValue(AppState.Success(repositoryImpl.getMovieFromLocalStorage()))
-        }.start()
-    }
-
-    fun getListTopMoviesFromAPI(){
+    fun getListTopMoviesFromAPI() {
         liveListMoviesToObserve.value = AppState.Loading
         repositoryImpl.getTopMoviesFromServer(callback)
     }

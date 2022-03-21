@@ -5,18 +5,19 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Movie(
-    val name: String = "Titanic",
-    val description: String = "Movie about the sinking of the titanic",
-    val genre: String = "drama",
-    val release_date: String = "01.11.1997"
+    val id: Int,
+    val name: String,
+    val overview: String,
+    val genre: String,
+    val release_date: String
 ) : Parcelable
 
 fun getMovies() = listOf(
-    Movie("Star Wars", "Movie about...", "Фантастика", "02.11.1997"),
-    Movie("Зеленая миля", "Movie about...", "Драма", "03.11.1999"),
-    Movie("Побег из Шоушенка", "Movie about...", "Драма", "04.10.1994"),
-    Movie("Список Шиндлера", "Movie about...", "Биография", "12.11.1993"),
-    Movie("Форрест Гамп", "Movie about...", "Комедия", "23.11.1994"),
-    Movie("1+1", "Movie about...", "Комедия", "24.11.2011"),
-    Movie("Криминальное чтиво", "Movie about...", "Криминал", "24.09.1994")
+    Movie(129, "Унесённые призраками", "Movie about...", "Фантастика", "02.11.1997"),
+    Movie(496243, "Паразиты", "Movie about...", "Драма", "03.11.1999"),
+    Movie(278, "Побег из Шоушенка", "Movie about...", "тест", "24.02.2022"),
+    Movie(244786, "Одержимость", "Movie about...", "Биография", "12.11.1993"),
+    Movie(13, "Форрест Гамп", "Movie about...", "Комедия", "23.11.1994"),
+    Movie(4935, "Ходячий замок", "Movie about...", "Драма", "24.11.2011"),
+    Movie(680, "Криминальное чтиво", "Movie about...", "Криминал", "24.09.1994")
 )

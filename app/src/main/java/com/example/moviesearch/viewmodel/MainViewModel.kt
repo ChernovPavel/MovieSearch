@@ -7,10 +7,10 @@ import com.example.moviesearch.model.Repo
 import com.example.moviesearch.model.RepositoryImpl
 import java.lang.Thread.sleep
 
-class MainViewModel(
-    private val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData(),
+class MainViewModel : ViewModel() {
+
+    private val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
     private val repositoryImpl: Repo = RepositoryImpl()
-) : ViewModel() {
 
     fun getLiveData() = liveListMoviesToObserve
 

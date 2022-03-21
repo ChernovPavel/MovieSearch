@@ -31,21 +31,17 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = findViewById(R.id.main_bottom_navigation)
 
         bottomNavigationView.setOnItemSelectedListener { id ->
-            val fragment: Fragment
             when (id.itemId) {
                 R.id.bottom_menu_list_movies -> {
-                    fragment = ListFragment()
-                    loadFragment(fragment)
+                    loadFragment(ListFragment())
                     true
                 }
                 R.id.bottom_menu_favorites -> {
-                    fragment = FavoritesMoviesFragment()
-                    loadFragment(fragment)
+                    loadFragment(FavoritesMoviesFragment())
                     true
                 }
                 R.id.bottom_menu_settings -> {
-                    fragment = SettingsFragment()
-                    loadFragment(fragment)
+                    loadFragment(SettingsFragment())
                     true
                 }
                 else -> false

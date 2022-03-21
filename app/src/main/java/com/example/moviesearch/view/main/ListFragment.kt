@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
@@ -22,18 +22,20 @@ class ListFragment : Fragment() {
         fun newInstance() = ListFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
+    private val viewModel: MainViewModel by activityViewModels()
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
+
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, movie)
-                manager.beginTransaction()
-                    .add(R.id.fragment_container, DetailsFragment.newInstance(bundle))
+            //кладем в переменную типа liveData выбранный фильм. Чтобы потом его достать в DetailsFragment
+            viewModel.select(movie)
+
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
+                    .add(R.id.fragment_container, DetailsFragment())
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }
@@ -52,7 +54,6 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.listFragmentRecyclerView.adapter = adapter
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val observer = Observer<AppState> {
             renderData(it)
@@ -89,15 +90,40 @@ class ListFragment : Fragment() {
             }
             is AppState.Error -> {
                 listFragmentLoadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(fragment_list_view, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.reload)) { viewModel.getMovieFromLocalSource() }
-                    .show()
+                fragmentListRootView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getMovieFromLocalSource() }
+                )
             }
         }
     }
 
+    private fun View.showSnackBar(
+        text: String,
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_INDEFINITE
+    ) {
+        Snackbar.make(this, text, length)
+            .setAction(actionText, action)
+            .show()
+    }
 
+    //SnackBar без экшена
+    private fun View.showSnackBarWithoutAction(
+        text: String,
+        length: Int = Snackbar.LENGTH_SHORT
+    ) {
+        Snackbar.make(this, text, length)
+            .show()
+    }
+
+    /**
+     * интерфейс клика по айтему.
+     * Вызывается onItemViewClick в методе bind() холдера
+     * А реализуется метод при создании адаптера (логика что делать по нажатию на элемент списка)
+     */
     interface OnItemViewClickListener {
         fun onItemViewClick(movie: Movie)
     }

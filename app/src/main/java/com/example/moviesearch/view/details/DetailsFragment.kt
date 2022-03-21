@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.moviesearch.databinding.FragmentDetailsBinding
-import com.example.moviesearch.model.Movie
+import com.example.moviesearch.viewmodel.MainViewModel
 
 
 class DetailsFragment : Fragment() {
 
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+
+    // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -24,29 +28,17 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movie = arguments?.getParcelable<Movie>(BUNDLE_EXTRA)
-        if (movie != null) {
+        //отображаем данные по фильму которые положили в переменную selectedItem при нажатии на item списка
+        viewModel.selectedItem.observe(viewLifecycleOwner, { movie ->
             binding.movieName.text = movie.name
             binding.movieDescription.text = movie.description
             binding.movieGenre.text = movie.genre
             binding.movieReleaseDate.text = movie.release_date
-        }
-
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val BUNDLE_EXTRA = "movie"
-
-        fun newInstance(bundle: Bundle): DetailsFragment {
-
-            val fragment = DetailsFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
     }
 }

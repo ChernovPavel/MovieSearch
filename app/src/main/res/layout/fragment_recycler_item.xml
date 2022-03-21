@@ -35,7 +35,7 @@
                 tools:text="Титаник" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mainFragmentRecyclerItemMovieGenre"
+                android:id="@+id/mainFragmentRecyclerItemMovieVoteAverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/recycler_item_genre_size"

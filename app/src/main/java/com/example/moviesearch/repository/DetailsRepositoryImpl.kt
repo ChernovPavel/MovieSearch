@@ -1,6 +1,7 @@
 package com.example.moviesearch.repository
 
 import com.example.moviesearch.model.MovieDTO
+import com.example.moviesearch.repository.api.RemoteDataSource
 
 class DetailsRepositoryImpl(private val remoteDataSource: RemoteDataSource) : DetailsRepository {
 

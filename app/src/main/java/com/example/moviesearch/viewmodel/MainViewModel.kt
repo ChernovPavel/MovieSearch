@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.moviesearch.model.MoviesResponse
 import com.example.moviesearch.repository.MainRepo
 import com.example.moviesearch.repository.MainRepositoryImpl
-import com.example.moviesearch.repository.RemoteDataSource
+import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.convertMoviesResponseToModel
 import retrofit2.Call
 import retrofit2.Response

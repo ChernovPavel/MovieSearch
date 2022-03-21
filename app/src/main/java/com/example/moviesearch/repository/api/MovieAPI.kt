@@ -1,4 +1,4 @@
-package com.example.moviesearch.repository
+package com.example.moviesearch.repository.api
 
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse

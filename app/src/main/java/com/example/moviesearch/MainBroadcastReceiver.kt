@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 
-class MainBroadcastReceiver: BroadcastReceiver() {
+class MainBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         StringBuilder().apply {
             append("СООБЩЕНИЕ ОТ СИСТЕМЫ\n")

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
@@ -55,16 +54,9 @@ class ListFragment : Fragment() {
 
         binding.listFragmentRecyclerView.adapter = adapter
 
-        val observer = Observer<AppState> {
-            renderData(it)
-        }
+        viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner, { renderData(it) })
 
-        //назначаем наблюдателя, который при изменении даты будет обновлять список фильмов
-        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
-
-        //запрашивам список фильмов из локального хранилища, чтобы liveData обновилась
-        //и адаптер также обновил список фильмов в ресайклере
-        viewModel.getMovieFromLocalSource()
+        viewModel.getListTopMoviesFromAPI()
 
     }
 
@@ -91,9 +83,9 @@ class ListFragment : Fragment() {
             is AppState.Error -> {
                 listFragmentLoadingLayout.visibility = View.GONE
                 fragmentListRootView.showSnackBar(
-                    getString(R.string.error),
+                    appState.error.message.toString(),
                     getString(R.string.reload),
-                    { viewModel.getMovieFromLocalSource() }
+                    { viewModel.getListTopMoviesFromAPI() }
                 )
             }
         }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
 import com.example.moviesearch.repository.DetailsRepositoryImpl
-import com.example.moviesearch.repository.RemoteDataSource
+import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.convertDtoToModel
 
 private const val SERVER_ERROR = "Ошибка сервера"

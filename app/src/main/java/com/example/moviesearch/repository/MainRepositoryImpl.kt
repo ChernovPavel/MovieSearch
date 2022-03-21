@@ -1,6 +1,9 @@
-package com.example.moviesearch.model
+package com.example.moviesearch.repository
 
-class RepositoryImpl : Repo {
+import com.example.moviesearch.model.Movie
+import com.example.moviesearch.model.getMovies
+
+class MainRepositoryImpl : MainRepo {
     override fun getMovieFromServer(): Movie {
         return Movie(1, "Титаник", "About", "drama", "01.01.2001")
     }

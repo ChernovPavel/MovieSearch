@@ -3,10 +3,12 @@ package com.example.moviesearch.view.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesearch.R
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.RectangleTransformation
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_recycler_item.view.*
 
 class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
@@ -41,13 +43,17 @@ class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnIt
 
         fun bind(movie: Movie) {
             itemView.apply {
-                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieName).text = movie.name
-                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieGenre).text = movie.genre
-                findViewById<TextView>(R.id.mainFragmentRecyclerItemMovieReleaseDate).text =
-                    movie.release_date
+                mainFragmentRecyclerItemMovieName.text = movie.title
+                mainFragmentRecyclerItemMovieGenre.text = movie.genre
+                mainFragmentRecyclerItemMovieReleaseDate.text = movie.release_date
                 setOnClickListener {
                     onItemViewClickListener?.onItemViewClick(movie)
                 }
+                Picasso
+                    .get()
+                    .load("https://image.tmdb.org/t/p/w500${movie.poster_path}?language=ru")
+                    .transform(RectangleTransformation())
+                    .into(moviePoster)
             }
         }
     }

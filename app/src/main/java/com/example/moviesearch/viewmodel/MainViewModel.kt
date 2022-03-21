@@ -3,14 +3,14 @@ package com.example.moviesearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moviesearch.model.Movie
-import com.example.moviesearch.model.Repo
-import com.example.moviesearch.model.RepositoryImpl
+import com.example.moviesearch.repository.MainRepo
+import com.example.moviesearch.repository.MainRepositoryImpl
 import java.lang.Thread.sleep
 
 class MainViewModel : ViewModel() {
 
     private val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
-    private val repositoryImpl: Repo = RepositoryImpl()
+    private val repositoryImpl: MainRepo = MainRepositoryImpl()
 
     fun getLiveData() = liveListMoviesToObserve
 
@@ -22,11 +22,5 @@ class MainViewModel : ViewModel() {
             sleep(1000)
             liveListMoviesToObserve.postValue(AppState.Success(repositoryImpl.getMovieFromLocalStorage()))
         }.start()
-    }
-
-    val selectedItem: MutableLiveData<Movie> = MutableLiveData()
-
-    fun select(movie: Movie) {
-        selectedItem.value = movie
     }
 }

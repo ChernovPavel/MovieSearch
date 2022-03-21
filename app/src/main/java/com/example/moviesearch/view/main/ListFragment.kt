@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : Fragment() {
@@ -30,12 +30,12 @@ class ListFragment : Fragment() {
 
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
-            //кладем в переменную типа liveData выбранный фильм. Чтобы потом его достать в DetailsFragment
-            viewModel.select(movie)
 
             activity?.supportFragmentManager?.apply {
+                val bundle = Bundle()
+                bundle.putInt(DetailsFragment.BUNDLE_EXTRA, movie.id)
                 beginTransaction()
-                    .add(R.id.fragment_container, DetailsFragment())
+                    .add(R.id.fragment_container, DetailsFragment.newInstance(bundle))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }
@@ -98,18 +98,6 @@ class ListFragment : Fragment() {
             }
         }
     }
-
-    private fun View.showSnackBar(
-        text: String,
-        actionText: String,
-        action: (View) -> Unit,
-        length: Int = Snackbar.LENGTH_INDEFINITE
-    ) {
-        Snackbar.make(this, text, length)
-            .setAction(actionText, action)
-            .show()
-    }
-
 
     /**
      * интерфейс клика по айтему.

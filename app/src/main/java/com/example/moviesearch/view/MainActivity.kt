@@ -1,7 +1,6 @@
 package com.example.moviesearch.view
 
 import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
-    private lateinit var bottomNavigationView: BottomNavigationView
     private var receiver = MainBroadcastReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +32,10 @@ class MainActivity : AppCompatActivity() {
                 .commitNow()
         }
 
-        bottomNavigationView = findViewById(R.id.main_bottom_navigation)
-
-        bottomNavigationView.setOnItemSelectedListener { id ->
+        binding.mainBottomNavigation.setOnItemSelectedListener { id ->
             when (id.itemId) {
                 R.id.bottom_menu_list_movies -> {
-                    loadFragment(ListFragment())
+                    loadFragment(ListFragment.newInstance())
                     true
                 }
                 R.id.bottom_menu_favorites -> {

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.MainActivityBinding
+import com.example.moviesearch.view.main.ListFragment
+import com.example.moviesearch.view.favorites.FavoritesMoviesFragment
+import com.example.moviesearch.view.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MoviesListFragment.newInstance())
+                .replace(R.id.fragment_container, ListFragment.newInstance())
                 .commitNow()
         }
 
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             val fragment: Fragment
             when (id.itemId) {
                 R.id.bottom_menu_list_movies -> {
-                    fragment = MoviesListFragment()
+                    fragment = ListFragment()
                     loadFragment(fragment)
                     true
                 }

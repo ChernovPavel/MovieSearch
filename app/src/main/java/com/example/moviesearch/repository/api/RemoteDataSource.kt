@@ -13,6 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 class RemoteDataSource {
+
+    private var russianMovie = ""
     private val movieApi = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/")
         .addConverterFactory(
@@ -27,8 +29,9 @@ class RemoteDataSource {
         movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY).enqueue(callback)
     }
 
-    fun getListTopMovies(callback: Callback<MoviesResponse>) {
-        movieApi.getTopMovies(BuildConfig.MOVIE_API_KEY).enqueue(callback)
+    fun getListTopMovies(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
+        russianMovie = if (isRuLanguage) "ru" else "en"
+        movieApi.getTopMovies(russianMovie, BuildConfig.MOVIE_API_KEY).enqueue(callback)
     }
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {

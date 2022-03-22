@@ -14,8 +14,9 @@ interface MovieAPI {
         @Query("api_key") apiKey: String
     ): Call<MovieDTO>
 
-    @GET("3/movie/top_rated?language=ru&page=1&region=ru")
+    @GET("3/movie/top_rated?page=1&region=ru")
     fun getTopMovies(
+        @Query("language") language: String,
         @Query("api_key") apiKey: String
     ): Call<MoviesResponse>
 }

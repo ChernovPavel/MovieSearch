@@ -1,5 +1,6 @@
 package com.example.moviesearch.view.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
+import com.example.moviesearch.view.settings.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -53,11 +55,17 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.listFragmentRecyclerView.adapter = adapter
-
         viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner, { renderData(it) })
+        showMoviesList()
+    }
 
-        viewModel.getListTopMoviesFromAPI()
-
+    private fun showMoviesList() {
+        activity?.let {
+            viewModel.getListTopMoviesFromAPI(
+                it.getPreferences(Context.MODE_PRIVATE)
+                    .getBoolean(IS_RUSSIAN_LANGUAGE, false)
+            )
+        }
     }
 
     override fun onDestroyView() {
@@ -85,7 +93,7 @@ class ListFragment : Fragment() {
                 fragmentListRootView.showSnackBar(
                     appState.error.message.toString(),
                     getString(R.string.reload),
-                    { viewModel.getListTopMoviesFromAPI() }
+                    { showMoviesList() }
                 )
             }
         }

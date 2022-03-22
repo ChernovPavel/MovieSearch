@@ -6,7 +6,7 @@ import retrofit2.Callback
 
 class MainRepositoryImpl(private val remoteDataSource: RemoteDataSource) : MainRepo {
 
-    override fun getTopMoviesFromServer(callback: Callback<MoviesResponse>) {
-        remoteDataSource.getListTopMovies(callback)
+    override fun getTopMoviesFromServer(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
+        remoteDataSource.getListTopMovies(isRuLanguage, callback)
     }
 }

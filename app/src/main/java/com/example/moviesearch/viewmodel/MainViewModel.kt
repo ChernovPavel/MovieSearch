@@ -19,10 +19,12 @@ class MainViewModel : ViewModel() {
     val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
     private val repositoryImpl: MainRepo = MainRepositoryImpl(RemoteDataSource())
 
-    fun getListTopMoviesFromAPI() {
+    fun getListTopMoviesFromAPI(isRuLanguage: Boolean) {
         liveListMoviesToObserve.value = AppState.Loading
-        repositoryImpl.getTopMoviesFromServer(callback)
+        repositoryImpl.getTopMoviesFromServer(isRuLanguage, callback)
     }
+
+
 
     private val callback = object : retrofit2.Callback<MoviesResponse> {
         override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {

@@ -60,6 +60,9 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setMovie(movie: Movie) {
+
+        viewModel.saveMovieToDB(movie)
+
         with(binding) {
             movieName.text = movie.title
             movieOverview.text = movie.overview

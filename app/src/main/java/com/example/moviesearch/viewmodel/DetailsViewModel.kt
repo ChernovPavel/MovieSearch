@@ -2,9 +2,13 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moviesearch.app.App.Companion.getHistoryDao
+import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
 import com.example.moviesearch.repository.DetailsRepositoryImpl
+import com.example.moviesearch.repository.LocalRepository
+import com.example.moviesearch.repository.LocalRepositoryImpl
 import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.convertDtoToModel
 
@@ -15,6 +19,7 @@ private const val CORRUPTED_DATA = "Неполные данные"
 class DetailsViewModel : ViewModel() {
     val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
     private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
+    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 
     fun getMovieFromAPI(movieId: Int) {
         detailsLiveData.value = AppState.Loading
@@ -52,5 +57,9 @@ class DetailsViewModel : ViewModel() {
         } else {
             AppState.Success(convertDtoToModel(movieDTO))
         }
+    }
+
+    fun saveMovieToDB(movie: Movie) {
+        historyRepository.saveEntity(movie)
     }
 }

@@ -3,6 +3,7 @@ package com.example.moviesearch.utils
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse
+import com.example.moviesearch.room.HistoryEntity
 
 fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
     return listOf(
@@ -31,4 +32,31 @@ fun convertMoviesResponseToModel(listMovies: MoviesResponse): List<Movie> {
         )
     }
     return list
+}
+
+fun convertHistoryEntityToMovie(entityList: List<HistoryEntity>): List<Movie> {
+    return entityList.map {
+        Movie(
+            it.idMovie,
+            it.title,
+            it.overview,
+            it.release_date,
+            it.genre,
+            it.poster_path,
+            it.vote_average
+        )
+    }
+}
+
+fun convertMovieToEntity(movie: Movie): HistoryEntity {
+    return HistoryEntity(
+        0,
+        movie.id,
+        movie.title,
+        movie.overview,
+        movie.release_date,
+        movie.genre,
+        movie.poster_path!!,
+        movie.vote_average!!
+    )
 }

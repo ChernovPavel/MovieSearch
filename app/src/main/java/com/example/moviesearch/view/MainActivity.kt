@@ -73,11 +73,13 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_history -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .add(R.id.fragment_container, HistoryFragment.newInstance())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
+                if (supportFragmentManager.findFragmentByTag("history") == null) {
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.fragment_container, HistoryFragment.newInstance(), "history")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
                 }
                 true
             }

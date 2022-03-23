@@ -29,7 +29,7 @@ class DetailsViewModel : ViewModel() {
     private val callback = object : retrofit2.Callback<MovieDTO> {
         override fun onResponse(
             call: retrofit2.Call<MovieDTO>,
-            response: retrofit2.Response<MovieDTO>
+            response: retrofit2.Response<MovieDTO>,
         ) {
             val serverResponse: MovieDTO? = response.body()
             detailsLiveData.postValue(
@@ -59,7 +59,5 @@ class DetailsViewModel : ViewModel() {
         }
     }
 
-    fun saveMovieToDB(movie: Movie) {
-        historyRepository.saveEntity(movie)
-    }
+    fun saveMovieToDB(movie: Movie) = Thread { historyRepository.saveEntity(movie) }.start()
 }

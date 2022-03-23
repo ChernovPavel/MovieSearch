@@ -38,16 +38,16 @@ class DetailsFragment : Fragment() {
 
         when (appState) {
             is AppState.Success -> {
-                binding.detailsFragmentLoadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 binding.fragmentMovieDetails.visibility = View.VISIBLE
                 setMovie(appState.movieData[0])
             }
             is AppState.Loading -> {
-                binding.detailsFragmentLoadingLayout.visibility = View.VISIBLE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
                 binding.fragmentMovieDetails.visibility = View.GONE
             }
             is AppState.Error -> {
-                binding.detailsFragmentLoadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 binding.fragmentMovieDetails.visibility = View.VISIBLE
                 fragmentMovieDetails.showSnackBar(
                     getString(R.string.error),

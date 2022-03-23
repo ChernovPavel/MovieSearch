@@ -12,4 +12,6 @@
     <string name="image_movie_poster">image_movie_poster</string>
     <string name="reload">Reload</string>
     <string name="error">Error</string>
+
+    <string name="menu_title_history">history</string>
 </resources>

@@ -82,14 +82,14 @@ class ListFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 val movieData = appState.movieData
-                listFragmentLoadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 adapter.setMovie(movieData)
             }
             is AppState.Loading -> {
-                listFragmentLoadingLayout.visibility = View.VISIBLE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
-                listFragmentLoadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 fragmentListRootView.showSnackBar(
                     appState.error.message.toString(),
                     getString(R.string.reload),

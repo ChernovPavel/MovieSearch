@@ -14,4 +14,6 @@
     <string name="error">Error</string>
 
     <string name="menu_title_history">history</string>
+    <string name="note_hint">Введите заметку</string>
+    <string name="save_note">Сохранить</string>
 </resources>

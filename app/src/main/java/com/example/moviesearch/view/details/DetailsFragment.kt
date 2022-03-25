@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,6 +13,7 @@ import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.RectangleTransformation
+import com.example.moviesearch.utils.hideKeyboard
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
@@ -90,7 +92,16 @@ class DetailsFragment : Fragment() {
         movieId = arguments?.getInt(BUNDLE_EXTRA) ?: -1
 
         viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
+        viewModel.noteLiveData.observe(viewLifecycleOwner, { noteEditText.setText(it) })
+
         viewModel.getMovieFromAPI(movieId)
+        viewModel.getNoteFromDB(movieId)
+
+        noteSaveButton.setOnClickListener {
+            viewModel.saveNoteToDB(noteEditText.text.toString(), movieId)
+            Toast.makeText(context, "Заметка сохранена", Toast.LENGTH_SHORT).show()
+            hideKeyboard()
+        }
     }
 
     override fun onDestroyView() {

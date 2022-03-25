@@ -18,14 +18,10 @@ class HistoryAdapter :
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            RecyclerItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
         return RecyclerItemViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(
-                    R.layout.fragment_history_item, parent,
-                    false
-                ) as View
+                .inflate(R.layout.fragment_history_item, parent, false) as View
         )
     }
 
@@ -45,14 +41,6 @@ class HistoryAdapter :
                     String.format(
                         "%s", data.title
                     )
-                itemView.setOnClickListener {
-                    Toast.makeText(
-                        itemView.context,
-                        "on click: ${data.title}",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
             }
         }
     }

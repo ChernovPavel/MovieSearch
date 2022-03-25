@@ -14,7 +14,7 @@ import java.io.IOException
 
 class RemoteDataSource {
 
-    private var russianMovie = ""
+    private var movieLanguage = ""
     private val movieApi = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/")
         .addConverterFactory(
@@ -30,8 +30,8 @@ class RemoteDataSource {
     }
 
     fun getListTopMovies(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
-        russianMovie = if (isRuLanguage) "ru" else "en"
-        movieApi.getTopMovies(russianMovie, BuildConfig.MOVIE_API_KEY).enqueue(callback)
+        movieLanguage = if (isRuLanguage) "ru" else "en"
+        movieApi.getTopMovies(movieLanguage, BuildConfig.MOVIE_API_KEY).enqueue(callback)
     }
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {

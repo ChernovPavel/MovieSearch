@@ -10,8 +10,14 @@ interface HistoryDao {
     @Query("SELECT * FROM HistoryEntity WHERE title LIKE :title")
     fun getDataByWord(title: String): List<HistoryEntity>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Query("SELECT note FROM NoteEntity WHERE IdMovie = :movieId")
+    fun getNote(movieId: Int): String
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entity: HistoryEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNote(entity: NoteEntity)
 
     @Update
     fun update(entity: HistoryEntity)

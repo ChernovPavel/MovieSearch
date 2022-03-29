@@ -14,6 +14,7 @@ import com.example.moviesearch.view.contacts.ContactsFragment
 import com.example.moviesearch.view.favorites.FavoritesMoviesFragment
 import com.example.moviesearch.view.history.HistoryFragment
 import com.example.moviesearch.view.main.ListFragment
+import com.example.moviesearch.view.map.MapsFragment
 import com.example.moviesearch.view.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
@@ -91,6 +92,17 @@ class MainActivity : AppCompatActivity() {
                             .add(R.id.fragment_container,
                                 ContactsFragment.newInstance(),
                                 "contacts")
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                    }
+                }
+                true
+            }
+            R.id.menu_google_maps -> {
+                if (supportFragmentManager.findFragmentByTag("maps") == null) {
+                    supportFragmentManager.apply {
+                        beginTransaction()
+                            .add(R.id.fragment_container, MapsFragment.newInstance(), "maps")
                             .addToBackStack("")
                             .commitAllowingStateLoss()
                     }

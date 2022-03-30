@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,15 +12,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentMapsMainBinding
+import com.example.moviesearch.viewmodel.MapsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.fragment_maps_main.*
-import java.io.IOException
 
 const val REQUEST_CODE_GPS = 12345
 
@@ -29,9 +29,13 @@ class MapsFragment : Fragment() {
 
     var _binding: FragmentMapsMainBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: MapsViewModel by lazy {
+        ViewModelProvider(this)[MapsViewModel::class.java]
+    }
+
+    private val markers: ArrayList<Marker> = arrayListOf()
 
     private lateinit var map: GoogleMap
-    private val markers: ArrayList<Marker> = arrayListOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
@@ -51,19 +55,7 @@ class MapsFragment : Fragment() {
     private fun getAddressAsync(latitude: Double, longitude: Double) {
         context?.let {
             val geoCoder = Geocoder(it)
-            Thread {
-                try {
-                    val addresses =
-                        geoCoder.getFromLocation(latitude,
-                            longitude, 1)
-                    textAddress.post {
-                        textAddress.text =
-                            addresses[0].getAddressLine(0)
-                    }
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }.start()
+            viewModel.getAddressForTextView(geoCoder, latitude, longitude)
         }
     }
 
@@ -96,26 +88,6 @@ class MapsFragment : Fragment() {
                     .add(previous, current)
                     .color(Color.RED)
                     .width(5f)
-            )
-        }
-    }
-
-    private fun goToAddress(
-        addresses: MutableList<Address>,
-        view: View,
-        searchText: String,
-    ) {
-        val location = LatLng(
-            addresses[0].latitude,
-            addresses[0].longitude
-        )
-        view.post {
-            setMarker(location, searchText, R.drawable.marker1)
-            map.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    location,
-                    15f
-                )
             )
         }
     }
@@ -200,6 +172,18 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        viewModel.textAddressLiveData.observe(viewLifecycleOwner, { textAddress.text = it })
+        viewModel.searchByAddressLiveData.observe(viewLifecycleOwner, { location ->
+            val searchText = searchAddress.text.toString()
+            setMarker(location, searchText, R.drawable.marker1)
+            map.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    location,
+                    15f
+                )
+            )
+        })
         initSearchByAddress()
     }
 
@@ -207,16 +191,7 @@ class MapsFragment : Fragment() {
         binding.buttonSearch.setOnClickListener {
             val geoCoder = Geocoder(it.context)
             val searchText = searchAddress.text.toString()
-            Thread {
-                try {
-                    val addresses = geoCoder.getFromLocationName(searchText, 1)
-                    if (addresses.size > 0) {
-                        goToAddress(addresses, it, searchText)
-                    }
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }.start()
+            viewModel.searchByAddress(geoCoder, searchText)
         }
     }
 

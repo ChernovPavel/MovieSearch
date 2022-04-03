@@ -11,7 +11,7 @@ class MainBroadcastReceiver : BroadcastReceiver() {
             append("СООБЩЕНИЕ ОТ СИСТЕМЫ\n")
             append("Action: ${intent?.action}")
             toString().also {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, it, Toast.LENGTH_SHORT).show() отключил показ чтобы не мешало
             }
         }
     }

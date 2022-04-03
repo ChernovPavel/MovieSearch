@@ -8,8 +8,12 @@
     <string name="favorites_movies_fragment">FavoritesMoviesFragment</string>
     <string name="movie_details">MovieDetails</string>
     <string name="movie_list">MovieList</string>
-    <string name="settings">Settings</string>
+    <string name="russian_language">Russian language</string>
     <string name="image_movie_poster">image_movie_poster</string>
     <string name="reload">Reload</string>
     <string name="error">Error</string>
+
+    <string name="menu_title_history">history</string>
+    <string name="note_hint">Введите заметку</string>
+    <string name="save_note">Сохранить</string>
 </resources>

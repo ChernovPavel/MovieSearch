@@ -2,6 +2,10 @@ package com.example.moviesearch.view.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
@@ -13,6 +17,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.moviesearch.MAP_SERVICE_EXTRA
+import com.example.moviesearch.MyIntentService
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentMapsMainBinding
 import com.example.moviesearch.viewmodel.MapsViewModel
@@ -24,6 +30,9 @@ import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.fragment_maps_main.*
 
 const val REQUEST_CODE_GPS = 12345
+const val DEFAULT_ZOOM = 15f
+const val BROADCAST_INTENT_FILTER = "BROADCAST_INTENT_FILTER"
+const val MAPS_FRAGMENT_BROADCAST_EXTRA = "MAPS_FRAGMENT_BROADCAST_EXTRA"
 
 class MapsFragment : Fragment() {
 
@@ -50,6 +59,21 @@ class MapsFragment : Fragment() {
             drawLine()
         }
         activateMyLocation(googleMap)
+    }
+
+    private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            intent.getParcelableExtra<LatLng>(MAPS_FRAGMENT_BROADCAST_EXTRA)?.let { location ->
+                val searchText = searchAddress.text.toString()
+                setMarker(location, searchText, R.drawable.marker1)
+                map.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        location,
+                        DEFAULT_ZOOM
+                    )
+                )
+            }
+        }
     }
 
     private fun getAddressAsync(latitude: Double, longitude: Double) {
@@ -159,6 +183,11 @@ class MapsFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_INTENT_FILTER))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -174,30 +203,27 @@ class MapsFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
 
         viewModel.textAddressLiveData.observe(viewLifecycleOwner, { textAddress.text = it })
-        viewModel.searchByAddressLiveData.observe(viewLifecycleOwner, { location ->
-            val searchText = searchAddress.text.toString()
-            setMarker(location, searchText, R.drawable.marker1)
-            map.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    location,
-                    15f
-                )
-            )
-        })
         initSearchByAddress()
     }
 
     private fun initSearchByAddress() {
         binding.buttonSearch.setOnClickListener {
-            val geoCoder = Geocoder(it.context)
-            val searchText = searchAddress.text.toString()
-            viewModel.searchByAddress(geoCoder, searchText)
+            context?.let { context ->
+                context.startService(Intent(context, MyIntentService::class.java).apply {
+                    putExtra(MAP_SERVICE_EXTRA, searchAddress.text.toString())
+                })
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        context?.unregisterReceiver(broadcastReceiver)
+        super.onDestroy()
     }
 
     companion object {

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviesearch.MAP_SERVICE_EXTRA
-import com.example.moviesearch.MyIntentService
-import com.example.moviesearch.R
+import com.example.moviesearch.*
 import com.example.moviesearch.databinding.FragmentMapsMainBinding
 import com.example.moviesearch.viewmodel.MapsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -38,9 +35,6 @@ class MapsFragment : Fragment() {
 
     var _binding: FragmentMapsMainBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MapsViewModel by lazy {
-        ViewModelProvider(this)[MapsViewModel::class.java]
-    }
 
     private val markers: ArrayList<Marker> = arrayListOf()
 
@@ -63,23 +57,36 @@ class MapsFragment : Fragment() {
 
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            intent.getParcelableExtra<LatLng>(MAPS_FRAGMENT_BROADCAST_EXTRA)?.let { location ->
-                val searchText = searchAddress.text.toString()
-                setMarker(location, searchText, R.drawable.marker1)
-                map.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        location,
-                        DEFAULT_ZOOM
-                    )
-                )
+            when (intent.getStringExtra(MAPS_FRAGMENT_TYPE)) {
+                INIT_SEARCH_BY_ADDRESS -> {
+                    intent.getParcelableExtra<LatLng>(MAPS_FRAGMENT_BROADCAST_EXTRA)
+                        ?.let { location ->
+                            val searchText = searchAddress.text.toString()
+                            setMarker(location, searchText, R.drawable.marker1)
+                            map.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    location,
+                                    DEFAULT_ZOOM
+                                )
+                            )
+                        }
+                }
+                GET_ADDRESS_FOR_TEXT_VIEW -> {
+                    intent.getStringExtra(MAPS_FRAGMENT_BROADCAST_EXTRA)?.let {
+                        textAddress.text = it
+                    }
+                }
             }
         }
     }
 
     private fun getAddressAsync(latitude: Double, longitude: Double) {
-        context?.let {
-            val geoCoder = Geocoder(it)
-            viewModel.getAddressForTextView(geoCoder, latitude, longitude)
+        context?.let { context ->
+            context.startService(Intent(context, MyIntentService::class.java).apply {
+                putExtra(LATITUDE, latitude)
+                putExtra(LONGITUDE, longitude)
+                putExtra(MAP_SERVICE_TYPE, GET_ADDRESS_FOR_TEXT_VIEW)
+            })
         }
     }
 
@@ -201,8 +208,6 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
-
-        viewModel.textAddressLiveData.observe(viewLifecycleOwner, { textAddress.text = it })
         initSearchByAddress()
     }
 
@@ -211,6 +216,7 @@ class MapsFragment : Fragment() {
             context?.let { context ->
                 context.startService(Intent(context, MyIntentService::class.java).apply {
                     putExtra(MAP_SERVICE_EXTRA, searchAddress.text.toString())
+                    putExtra(MAP_SERVICE_TYPE, INIT_SEARCH_BY_ADDRESS)
                 })
             }
         }

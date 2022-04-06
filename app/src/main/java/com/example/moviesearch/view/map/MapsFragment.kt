@@ -15,10 +15,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.*
 import com.example.moviesearch.databinding.FragmentMapsMainBinding
-import com.example.moviesearch.viewmodel.MapsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,9 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.fragment_maps_main.*
 
-const val REQUEST_CODE_GPS = 12345
-const val DEFAULT_ZOOM = 15f
 const val BROADCAST_INTENT_FILTER = "BROADCAST_INTENT_FILTER"
+const val MAPS_FRAGMENT_BROADCAST_TYPE = "MAPS_FRAGMENT_BROADCAST_TYPE"
 const val MAPS_FRAGMENT_BROADCAST_EXTRA = "MAPS_FRAGMENT_BROADCAST_EXTRA"
 
 class MapsFragment : Fragment() {
@@ -57,7 +54,7 @@ class MapsFragment : Fragment() {
 
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getStringExtra(MAPS_FRAGMENT_TYPE)) {
+            when (intent.getStringExtra(MAPS_FRAGMENT_BROADCAST_TYPE)) {
                 INIT_SEARCH_BY_ADDRESS -> {
                     intent.getParcelableExtra<LatLng>(MAPS_FRAGMENT_BROADCAST_EXTRA)
                         ?.let { location ->
@@ -234,6 +231,9 @@ class MapsFragment : Fragment() {
 
     companion object {
         fun newInstance() = MapsFragment()
+
+        const val REQUEST_CODE_GPS = 12345
+        const val DEFAULT_ZOOM = 15f
     }
 }
 

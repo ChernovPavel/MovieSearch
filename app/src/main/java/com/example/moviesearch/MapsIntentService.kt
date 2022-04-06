@@ -5,16 +5,16 @@ import android.content.Intent
 import android.location.Geocoder
 import com.example.moviesearch.view.map.BROADCAST_INTENT_FILTER
 import com.example.moviesearch.view.map.MAPS_FRAGMENT_BROADCAST_EXTRA
+import com.example.moviesearch.view.map.MAPS_FRAGMENT_BROADCAST_TYPE
 import com.google.android.gms.maps.model.LatLng
 import java.io.IOException
 
+const val MAP_SERVICE_TYPE = "MAP_SERVICE_TYPE"
 const val MAP_SERVICE_EXTRA = "MapServiceExtra"
 const val LATITUDE = "LATITUDE"
 const val LONGITUDE = "LONGITUDE"
-const val MAP_SERVICE_TYPE = "MapServiceTYPE"
-const val INIT_SEARCH_BY_ADDRESS = "INIT_SEARCH_BY_ADDRESS"
 const val GET_ADDRESS_FOR_TEXT_VIEW = "GET_ADDRESS_FOR_TEXT_VIEW"
-const val MAPS_FRAGMENT_TYPE = "MAPS_FRAGMENT_BROADCAST_EXTRA"
+const val INIT_SEARCH_BY_ADDRESS = "INIT_SEARCH_BY_ADDRESS"
 
 
 class MyIntentService : IntentService("MyIntentService") {
@@ -57,7 +57,7 @@ class MyIntentService : IntentService("MyIntentService") {
     private fun sendMessageToBroadcast(location: LatLng) {
         val broadcastIntent = Intent(BROADCAST_INTENT_FILTER).apply {
             putExtra(MAPS_FRAGMENT_BROADCAST_EXTRA, location)
-            putExtra(MAPS_FRAGMENT_TYPE, INIT_SEARCH_BY_ADDRESS)
+            putExtra(MAPS_FRAGMENT_BROADCAST_TYPE, INIT_SEARCH_BY_ADDRESS)
         }
         sendBroadcast(broadcastIntent)
     }
@@ -65,7 +65,7 @@ class MyIntentService : IntentService("MyIntentService") {
     private fun sendMessageToBroadcast2(address: String) {
         val broadcastIntent = Intent(BROADCAST_INTENT_FILTER).apply {
             putExtra(MAPS_FRAGMENT_BROADCAST_EXTRA, address)
-            putExtra(MAPS_FRAGMENT_TYPE, GET_ADDRESS_FOR_TEXT_VIEW)
+            putExtra(MAPS_FRAGMENT_BROADCAST_TYPE, GET_ADDRESS_FOR_TEXT_VIEW)
         }
         sendBroadcast(broadcastIntent)
     }

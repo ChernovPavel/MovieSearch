@@ -7,6 +7,10 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+        }
+    }
     compileSdk 31
 
     androidExtensions {
@@ -28,18 +32,56 @@ android {
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         def apikey = properties.getProperty("the_movie_db_api_key", "")
         it.buildConfigField "String", "MOVIE_API_KEY", apikey
+
+        Properties props = new Properties()
+        def propFile = new File('signing.properties')
+        if (propFile.canRead()) {
+            props.load(new FileInputStream(propFile))
+
+            if (props != null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+                    props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+                android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+                android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+                android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+                android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+            } else {
+                println 'signing.properties found but some entries are missing'
+                android.buildTypes.release.signingConfig = null
+            }
+        } else {
+            println 'signing.properties not found'
+            android.buildTypes.release.signingConfig = null
+        }
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            versionNameSuffix "-debug"
+        }
     }
+
+    flavorDimensions 'version'
+
+    productFlavors {
+        free {
+            dimension 'version'
+            versionNameSuffix '.free'
+        }
+        paid {
+            dimension 'version'
+            versionNameSuffix '.paid'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -69,7 +111,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.google.firebase:firebase-messaging:23.0.2'
     kapt 'androidx.room:room-compiler:2.4.2'
-    testImplementation 'junit:junit:'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation platform('com.google.firebase:firebase-bom:29.2.1')

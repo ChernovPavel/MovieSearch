@@ -43,11 +43,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.bottom_menu_favorites -> {
-                    loadFragment(FavoritesMoviesFragment())
+                    loadFragment(FavoritesMoviesFragment.newInstance())
                     true
                 }
                 R.id.bottom_menu_settings -> {
-                    loadFragment(SettingsFragment())
+                    loadFragment(SettingsFragment.newInstance())
                     true
                 }
                 else -> false

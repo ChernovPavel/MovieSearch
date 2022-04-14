@@ -29,8 +29,10 @@ class DetailsFragment : Fragment() {
 
     companion object {
         const val BUNDLE_EXTRA = "movieId"
-        fun newInstance(bundle: Bundle): DetailsFragment {
+        fun newInstance(movieId: Int): DetailsFragment {
             val fragment = DetailsFragment()
+            val bundle = Bundle()
+            bundle.putInt(BUNDLE_EXTRA, movieId)
             fragment.arguments = bundle
             return fragment
         }

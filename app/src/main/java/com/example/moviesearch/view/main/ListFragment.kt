@@ -33,10 +33,8 @@ class ListFragment : Fragment() {
         override fun onItemViewClick(movie: Movie) {
 
             activity?.supportFragmentManager?.apply {
-                val bundle = Bundle()
-                bundle.putInt(DetailsFragment.BUNDLE_EXTRA, movie.id)
                 beginTransaction()
-                    .add(R.id.fragment_container, DetailsFragment.newInstance(bundle))
+                    .add(R.id.fragment_container, DetailsFragment.newInstance(movie.id))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }
@@ -69,8 +67,8 @@ class ListFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
     override fun onDestroy() {

@@ -12,7 +12,6 @@ import androidx.fragment.app.activityViewModels
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
-import com.example.moviesearch.utils.RectangleTransformation
 import com.example.moviesearch.utils.hideKeyboard
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
@@ -69,15 +68,15 @@ class DetailsFragment : Fragment() {
 
         with(binding) {
             movieName.text = movie.title
+            collapsing_toolbar.title = movie.title
             movieOverview.text = movie.overview
             movieGenre.text = movie.genre
             movieReleaseDate.text = movie.release_date
-
             Picasso
                 .get()
-                .load("https://image.tmdb.org/t/p/w500${movie.poster_path}?language=ru")
-                .transform(RectangleTransformation())
-                .into(detailFragmentMoviePoster)
+                .load("https://image.tmdb.org/t/p/w500${movie.backdrop_path}?language=ru")
+                .into(image_collapsing_toolbar)
+
         }
     }
 

@@ -13,6 +13,7 @@ data class HistoryEntity(
     val overview: String,
     val release_date: String,
     val genre: String,
+    val backdrop_path: String,
     val poster_path: String,
     val vote_average: Double
 )

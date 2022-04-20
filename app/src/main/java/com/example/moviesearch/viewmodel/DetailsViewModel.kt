@@ -52,7 +52,7 @@ class DetailsViewModel : ViewModel() {
             movieDTO.overview == null ||
             movieDTO.release_date == null ||
             movieDTO.genres?.get(0)?.name == null ||
-            movieDTO.poster_path == null
+            movieDTO.backdrop_path == null
         ) {
             AppState.Error(Throwable(CORRUPTED_DATA))
         } else {

@@ -13,6 +13,7 @@ fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
             movieDTO.overview!!,
             movieDTO.release_date!!,
             movieDTO.genres?.get(0)?.name!!,
+            movieDTO.backdrop_path,
             movieDTO.poster_path,
             movieDTO.vote_average
         )
@@ -27,6 +28,7 @@ fun convertMoviesResponseToModel(listMovies: MoviesResponse): List<Movie> {
             it.overview!!,
             it.release_date!!,
             "",
+            it.backdrop_path!!,
             it.poster_path!!,
             it.vote_average
         )
@@ -42,6 +44,7 @@ fun convertHistoryEntityToMovie(entityList: List<HistoryEntity>): List<Movie> {
             it.overview,
             it.release_date,
             it.genre,
+            it.backdrop_path,
             it.poster_path,
             it.vote_average
         )
@@ -56,6 +59,7 @@ fun convertMovieToEntity(movie: Movie): HistoryEntity {
         movie.overview,
         movie.release_date,
         movie.genre,
+        movie.backdrop_path!!,
         movie.poster_path!!,
         movie.vote_average!!
     )

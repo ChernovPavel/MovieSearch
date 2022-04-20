@@ -10,6 +10,7 @@ data class MovieDTO(
     val overview: String?,
     val release_date: String?,
     val genres: List<Genres>?,
+    val backdrop_path: String?,
     val poster_path: String?,
     val vote_average: Double?
 ) : Parcelable

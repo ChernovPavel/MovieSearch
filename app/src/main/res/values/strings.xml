@@ -16,4 +16,16 @@
     <string name="menu_title_contacts">contacts</string>
     <string name="note_hint">Введите заметку</string>
     <string name="save_note">Save</string>
+    <string name="save_note">Сохранить</string>
+    <string name="google_maps">maps</string>
+
+    <string name="dialog_button_close">Закрыть</string>
+    <string name="dialog_title_no_gps">Доступ к геолокации закрыт</string>
+    <string name="dialog_message_no_gps">Разрешите доступ к геолокации, если хотите
+найти себя на карте</string>
+    <string name="default_address">Red Square, 1, Moscow</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
+    <string name="set_address">Введите адрес</string>
+    <string name="search_address">Найти</string>
 </resources>

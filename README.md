@@ -18,6 +18,7 @@ Pet project для демонстрации технологий и подход
 ----------
 
 ![Фрагмент со списком](screenshots/list_fragment.png "Фрагмент со списком")
+<img src="screenshots/list_fragment.png" width="240">
 ![Детальный фрагмент](screenshots/detail_fragment1.png "Детальный фрагмент, начальное положение")
 ![Детальный фрагмент](screenshots/detail_fragment2.png "Детальный фрагмент, при скролле")
 ![Экран настроек](screenshots/settings.png "Экран настроек")

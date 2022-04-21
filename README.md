@@ -19,7 +19,7 @@ Pet project для демонстрации технологий и подход
 Скриншоты:
 ----------
 
-! <img src="screenshots/list_fragment.png" width="240">
+! <img src="screenshots/ru_list.png" width="240">
 ! <img src="screenshots/detail_fragment1.png" width="240">
 ! <img src="screenshots/detail_fragment2.png" width="240">
 ! <img src="screenshots/settings.png" width="240">

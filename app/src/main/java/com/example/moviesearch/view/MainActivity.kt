@@ -73,24 +73,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_history -> {
-                if (supportFragmentManager.findFragmentByTag("history") == null) {
-                    supportFragmentManager.apply {
-                        beginTransaction()
-                            .add(R.id.fragment_container, HistoryFragment.newInstance(), "history")
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
-                    }
-                }
-                true
-            }
             R.id.menu_contacts -> {
                 if (supportFragmentManager.findFragmentByTag("contacts") == null) {
                     supportFragmentManager.apply {
                         beginTransaction()
-                            .add(R.id.fragment_container,
+                            .add(
+                                R.id.fragment_container,
                                 ContactsFragment.newInstance(),
-                                "contacts")
+                                "contacts"
+                            )
                             .addToBackStack("")
                             .commitAllowingStateLoss()
                     }
@@ -101,7 +92,11 @@ class MainActivity : AppCompatActivity() {
                 if (supportFragmentManager.findFragmentByTag("maps") == null) {
                     supportFragmentManager.apply {
                         beginTransaction()
-                            .add(R.id.fragment_container, MapsFragment.newInstance(), "maps")
+                            .add(
+                                R.id.fragment_container,
+                                MapsFragment.newInstance(),
+                                "maps"
+                            )
                             .addToBackStack("")
                             .commitAllowingStateLoss()
                     }

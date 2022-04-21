@@ -12,11 +12,9 @@
     <string name="reload">Reload</string>
     <string name="error">Error</string>
 
-    <string name="menu_title_history">history</string>
     <string name="menu_title_contacts">contacts</string>
     <string name="note_hint">Введите заметку</string>
     <string name="save_note">Save</string>
-    <string name="save_note">Сохранить</string>
     <string name="google_maps">maps</string>
 
     <string name="dialog_button_close">Закрыть</string>

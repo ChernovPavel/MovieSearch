@@ -13,6 +13,7 @@
     <string name="error">Error</string>
 
     <string name="menu_title_history">history</string>
+    <string name="menu_title_contacts">contacts</string>
     <string name="note_hint">Введите заметку</string>
     <string name="save_note">Save</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.moviesearch.R
@@ -90,10 +91,11 @@ class DetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         movieId = arguments?.getInt(BUNDLE_EXTRA) ?: -1
 
-        viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
-        viewModel.noteLiveData.observe(viewLifecycleOwner, { noteEditText.setText(it) })
+        viewModel.detailsLiveData.observe(viewLifecycleOwner) { renderData(it) }
+        viewModel.noteLiveData.observe(viewLifecycleOwner) { noteEditText.setText(it) }
 
         viewModel.getMovieFromAPI(movieId)
         viewModel.getNoteFromDB(movieId)
@@ -106,7 +108,8 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
         _binding = null
+        super.onDestroyView()
     }
 }

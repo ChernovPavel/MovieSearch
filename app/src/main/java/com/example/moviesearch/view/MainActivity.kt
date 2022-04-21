@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.moviesearch.MainBroadcastReceiver
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.MainActivityBinding
-import com.example.moviesearch.view.favorites.FavoritesMoviesFragment
 import com.example.moviesearch.view.history.HistoryFragment
 import com.example.moviesearch.view.main.ListFragment
 import com.example.moviesearch.view.settings.SettingsFragment
@@ -40,8 +39,8 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(ListFragment.newInstance())
                     true
                 }
-                R.id.bottom_menu_favorites -> {
-                    loadFragment(FavoritesMoviesFragment())
+                R.id.bottom_menu_history -> {
+                    loadFragment(HistoryFragment.newInstance())
                     true
                 }
                 R.id.bottom_menu_settings -> {

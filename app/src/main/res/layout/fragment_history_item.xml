@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_5_dp"
         android:layout_marginTop="@dimen/margin_5_dp"
+        android:textSize="@dimen/details_fragment_secondary_text_size"
         tools:text="Header" />
     <View
         android:layout_width="match_parent"

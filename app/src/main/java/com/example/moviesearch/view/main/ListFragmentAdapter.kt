@@ -3,12 +3,13 @@ package com.example.moviesearch.view.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesearch.R
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.RectangleTransformation
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_recycler_item.view.*
 
 class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
@@ -41,12 +42,17 @@ class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnIt
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val itemMovieName = view.findViewById<TextView>(R.id.itemMovieName)
+        private val itemMovieVoteAverage = view.findViewById<TextView>(R.id.itemMovieVoteAverage)
+        private val itemMovieReleaseDate = view.findViewById<TextView>(R.id.itemMovieReleaseDate)
+        private val moviePoster = view.findViewById<ImageView>(R.id.moviePoster)
+
         fun bind(movie: Movie) {
             itemView.apply {
-                mainFragmentRecyclerItemMovieName.text = movie.title
-                mainFragmentRecyclerItemMovieVoteAverage.text =
+                itemMovieName.text = movie.title
+                itemMovieVoteAverage.text =
                     String.format("Рейтинг: %s", movie.vote_average.toString())
-                mainFragmentRecyclerItemMovieReleaseDate.text = movie.release_date
+                itemMovieReleaseDate.text = movie.release_date
                 setOnClickListener {
                     onItemViewClickListener?.onItemViewClick(movie)
                 }

@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mainFragmentRecyclerItemMovieName"
+                android:id="@+id/itemMovieName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/recycler_item_name_size"
@@ -35,14 +35,14 @@
                 tools:text="Титаник" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mainFragmentRecyclerItemMovieVoteAverage"
+                android:id="@+id/itemMovieVoteAverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/recycler_item_genre_size"
                 tools:text="Драма" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/mainFragmentRecyclerItemMovieReleaseDate"
+                android:id="@+id/itemMovieReleaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/recycler_item_genre_size"

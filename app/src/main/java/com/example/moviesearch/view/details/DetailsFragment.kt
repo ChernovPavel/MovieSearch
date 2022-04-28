@@ -18,7 +18,6 @@ import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment() {
 
@@ -53,7 +52,7 @@ class DetailsFragment : Fragment() {
             is AppState.Error -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 binding.fragmentMovieDetails.visibility = View.VISIBLE
-                fragmentMovieDetails.showSnackBar(
+                binding.fragmentMovieDetails.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
                     {
@@ -69,14 +68,14 @@ class DetailsFragment : Fragment() {
 
         with(binding) {
             movieName.text = movie.title
-            collapsing_toolbar.title = movie.title
+            collapsingToolbar.title = movie.title
             movieOverview.text = movie.overview
             movieGenre.text = movie.genre
             movieReleaseDate.text = movie.release_date
             Picasso
                 .get()
                 .load("https://image.tmdb.org/t/p/w500${movie.backdrop_path}?language=ru")
-                .into(image_collapsing_toolbar)
+                .into(imageCollapsingToolbar)
 
         }
     }
@@ -95,13 +94,13 @@ class DetailsFragment : Fragment() {
         movieId = arguments?.getInt(BUNDLE_EXTRA) ?: -1
 
         viewModel.detailsLiveData.observe(viewLifecycleOwner) { renderData(it) }
-        viewModel.noteLiveData.observe(viewLifecycleOwner) { noteEditText.setText(it) }
+        viewModel.noteLiveData.observe(viewLifecycleOwner) { binding.noteEditText.setText(it) }
 
         viewModel.getMovieFromAPI(movieId)
         viewModel.getNoteFromDB(movieId)
 
-        noteSaveButton.setOnClickListener {
-            viewModel.saveNoteToDB(noteEditText.text.toString(), movieId)
+        binding.noteSaveButton.setOnClickListener {
+            viewModel.saveNoteToDB(binding.noteEditText.text.toString(), movieId)
             Toast.makeText(context, "Заметка сохранена", Toast.LENGTH_SHORT).show()
             hideKeyboard()
         }

@@ -15,7 +15,6 @@ import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.view.settings.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : Fragment() {
 
@@ -23,7 +22,6 @@ class ListFragment : Fragment() {
         fun newInstance() = ListFragment()
     }
 
-    // запрашиваем ViewModel активити. Чтобы на несколько фрагментов создавалась одна ViewModel
     private val viewModel: MainViewModel by activityViewModels()
 
     private var _binding: FragmentListBinding? = null
@@ -88,7 +86,7 @@ class ListFragment : Fragment() {
             }
             is AppState.Error -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
-                fragmentListRootView.showSnackBar(
+                binding.fragmentListRootView.showSnackBar(
                     appState.error.message.toString(),
                     getString(R.string.reload),
                     { showMoviesList() }

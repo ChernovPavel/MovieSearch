@@ -3,11 +3,10 @@ package com.example.moviesearch.view.history
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesearch.R
 import com.example.moviesearch.model.Movie
-import kotlinx.android.synthetic.main.fragment_history_item.view.*
 
 class HistoryAdapter :
     RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
@@ -33,11 +32,13 @@ class HistoryAdapter :
         return data.size
     }
 
-    inner class RecyclerItemViewHolder(view: View) :
-        RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        private val recyclerViewItem = view.findViewById<TextView>(R.id.recyclerViewItem)
+
         fun bind(data: Movie) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.recyclerViewItem.text =
+                recyclerViewItem.text =
                     String.format(
                         "%s", data.title
                     )

@@ -10,8 +10,8 @@
     android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="5dp">
+    app:cardCornerRadius="@dimen/recycler_item_card_corner_radius"
+    app:cardElevation="@dimen/recycler_item_card_elevation">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/recycler_item_default_margin"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -53,8 +53,8 @@
 
         <ImageView
             android:id="@+id/moviePoster"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/recycler_item_poster_size"
+            android:layout_height="@dimen/recycler_item_poster_size"
             android:layout_gravity="center"
             android:scaleType="centerInside"
             android:contentDescription="@string/image_movie_poster"/>

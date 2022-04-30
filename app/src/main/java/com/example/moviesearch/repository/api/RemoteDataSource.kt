@@ -12,9 +12,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
+private const val RUSSIAN = "ru"
+private const val ENGLISH = "en"
+
 class RemoteDataSource {
 
-    private var movieLanguage = ""
+    private lateinit var movieLanguage : String
     private val movieApi = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/")
         .addConverterFactory(
@@ -30,7 +33,7 @@ class RemoteDataSource {
     }
 
     fun getListTopMovies(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
-        movieLanguage = if (isRuLanguage) "ru" else "en"
+        movieLanguage = if (isRuLanguage) RUSSIAN else ENGLISH
         movieApi.getTopMovies(movieLanguage, BuildConfig.MOVIE_API_KEY).enqueue(callback)
     }
 

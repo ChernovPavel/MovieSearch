@@ -1,5 +1,6 @@
 package com.example.moviesearch.view.details
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -87,10 +88,15 @@ class DetailsFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("RestrictedApi")
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+            setShowHideAnimationEnabled(false)
+            hide()
+        }
+
         movieId = arguments?.getInt(BUNDLE_EXTRA) ?: -1
 
         viewModel.detailsLiveData.observe(viewLifecycleOwner) { renderData(it) }

@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState?.let {} ?: run {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance())
-                .commitNow()
+                .commit()
         }
 
         binding.mainBottomNavigation.setOnItemSelectedListener { id ->
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+        supportFragmentManager.popBackStack()
     }
 
     override fun onDestroy() {

@@ -10,11 +10,10 @@ import com.example.moviesearch.model.Movie
 
 class HistoryAdapter :
     RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
-    private var data: List<Movie> = arrayListOf()
+    var historyData: List<Movie> = listOf()
 
     fun setData(data: List<Movie>) {
-        this.data = data
-        notifyDataSetChanged()
+        historyData = data
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
@@ -25,11 +24,11 @@ class HistoryAdapter :
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(historyData[position])
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return historyData.size
     }
 
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {

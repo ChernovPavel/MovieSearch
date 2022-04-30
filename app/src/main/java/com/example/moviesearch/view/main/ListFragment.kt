@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
@@ -79,7 +80,10 @@ class ListFragment : Fragment() {
             is AppState.Success -> {
                 val movieData = appState.movieData
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
+                val movieDiffUtilCallback = MoviesDiffUtilsCallback(adapter.movieData, movieData)
+                val movieDiffResult = DiffUtil.calculateDiff(movieDiffUtilCallback)
                 adapter.setMovie(movieData)
+                movieDiffResult.dispatchUpdatesTo(adapter)
             }
             is AppState.Loading -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE

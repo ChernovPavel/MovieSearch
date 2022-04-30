@@ -1,7 +1,7 @@
 package com.example.moviesearch.view
 
+import android.content.Intent
 import android.content.IntentFilter
-import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerReceiver(receiver, IntentFilter(CONNECTIVITY_ACTION))
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
 
         binding = MainActivityBinding.inflate(layoutInflater)
         val view = binding.root

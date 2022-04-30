@@ -14,11 +14,10 @@ import com.squareup.picasso.Picasso
 class ListFragmentAdapter(private var onItemViewClickListener: ListFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
 
-    private var movieData: List<Movie> = listOf()
+    var movieData: List<Movie> = listOf()
 
     fun setMovie(data: List<Movie>) {
         movieData = data
-        notifyDataSetChanged()
     }
 
     fun removeListener() {

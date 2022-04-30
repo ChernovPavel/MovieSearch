@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentHistoryBinding
 import com.example.moviesearch.utils.showSnackBar
@@ -45,7 +46,12 @@ class HistoryFragment : Fragment() {
                 binding.historyFragmentRecyclerview.visibility = View.VISIBLE
                 binding.includedLoadingLayout.loadingLayout.visibility =
                     View.GONE
-                adapter.setData(appState.movieData)
+                val movieData = appState.movieData
+                val historyDiffUtilCallback =
+                    HistoryDiffUtilsCallback(adapter.historyData, movieData)
+                val historyDiffResult = DiffUtil.calculateDiff(historyDiffUtilCallback)
+                adapter.setData(movieData)
+                historyDiffResult.dispatchUpdatesTo(adapter)
             }
             is AppState.Loading -> {
                 binding.historyFragmentRecyclerview.visibility = View.GONE

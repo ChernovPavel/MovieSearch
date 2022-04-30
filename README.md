@@ -13,9 +13,7 @@ Pet project для демонстрации технологий и подход
 В качестве архитектуры выбрана `MVVM` с использованием `liveData`
 
 Также в приложении представлена второстепенная функциональность: 
-- экран со списком контактов из телефонной книги (работа с `permissons`)
 - экран с историей открытых фильмов (работа с локальной БД c помощью `Room`)
-- экран с google картой (работа с Api карт, использование компонентов `Service` и `Broadcast Receiver`)
 - возможность получения и кастомной обработки нотификаций отправленных из `Firebase`
 
 Screenshots:
@@ -31,7 +29,6 @@ Screenshots:
 
 - MVVM
 - LiveData
-- Intent Service
 - Broadcast Receiver
 - Recycler View
 - Canvas
@@ -39,6 +36,4 @@ Screenshots:
 - Shared Preferences
 - Retrofit
 - Room
-- Google Map Api
-- Permissions
 - Firebase-messaging

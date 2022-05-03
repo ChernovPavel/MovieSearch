@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        savedInstanceState?.let {} ?: run {
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance())
                 .commit()

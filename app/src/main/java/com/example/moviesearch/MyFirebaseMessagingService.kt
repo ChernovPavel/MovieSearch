@@ -14,8 +14,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val PUSH_KEY_TITLE = "title"
         private const val PUSH_KEY_MESSAGE = "message"
-        private const val CHANNEL_ID = "channel_id"
-        private const val NOTIFICATION_ID = 37
+        private const val CHANNEL_ID = "my_channel"
+        private const val NOTIFICATION_ID = 15
     }
 
     override fun onMessageReceived(remotemessage: RemoteMessage) {
@@ -52,8 +52,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {
-        val name = "Channel name"
-        val descriptionText = "Channel description"
+        val name = "movie channel"
+        val descriptionText = "channel for receiving msg"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
             description = descriptionText

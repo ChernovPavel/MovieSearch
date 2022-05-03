@@ -14,5 +14,6 @@
 
     <string name="menu_title_contacts">contacts</string>
     <string name="note_hint">Введите заметку</string>
+    <string name="note_saved">Заметка сохранена</string>
     <string name="save_note">Save</string>
 </resources>

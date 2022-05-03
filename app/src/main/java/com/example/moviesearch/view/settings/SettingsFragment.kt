@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.databinding.FragmentSettingsBinding
-import com.example.moviesearch.viewmodel.MainViewModel
 
 const val IS_RUSSIAN_LANGUAGE = "IS_RUSSIAN_LANGUAGE"
 
@@ -18,7 +16,6 @@ class SettingsFragment : Fragment() {
         fun newInstance() = SettingsFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
@@ -32,8 +29,6 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
         activity?.let {
             binding.changeLanguageSwitch.isChecked =
                 it.getPreferences(Context.MODE_PRIVATE)

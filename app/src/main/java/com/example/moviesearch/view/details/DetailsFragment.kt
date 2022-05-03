@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
@@ -25,14 +25,16 @@ class DetailsFragment : Fragment() {
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private var movieId: Int = -1
-    private val viewModel: DetailsViewModel by activityViewModels()
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this)[DetailsViewModel::class.java]
+    }
 
     companion object {
-        const val BUNDLE_EXTRA = "movieId"
+        const val MOVIE_ID = "movieId"
         fun newInstance(movieId: Int): DetailsFragment {
             val fragment = DetailsFragment()
             val bundle = Bundle()
-            bundle.putInt(BUNDLE_EXTRA, movieId)
+            bundle.putInt(MOVIE_ID, movieId)
             fragment.arguments = bundle
             return fragment
         }
@@ -54,7 +56,7 @@ class DetailsFragment : Fragment() {
             hide()
         }
 
-        movieId = arguments?.getInt(BUNDLE_EXTRA) ?: -1
+        movieId = arguments?.getInt(MOVIE_ID) ?: -1
 
         viewModel.detailsLiveData.observe(viewLifecycleOwner) { renderData(it) }
         viewModel.noteLiveData.observe(viewLifecycleOwner) { binding.noteEditText.setText(it) }
@@ -64,7 +66,7 @@ class DetailsFragment : Fragment() {
 
         binding.noteSaveButton.setOnClickListener {
             viewModel.saveNoteToDB(binding.noteEditText.text.toString(), movieId)
-            Toast.makeText(context, "Заметка сохранена", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.note_saved, Toast.LENGTH_SHORT).show()
             hideKeyboard()
         }
     }

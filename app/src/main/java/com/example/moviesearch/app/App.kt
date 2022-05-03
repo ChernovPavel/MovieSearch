@@ -21,13 +21,14 @@ class App : Application() {
             synchronized(HistoryDataBase::class.java) {
                 if (db == null) {
                     if (appInstance == null) throw IllegalAccessException("APP must not be null")
-                    db = Room.databaseBuilder(
-                        appInstance!!.applicationContext,
-                        HistoryDataBase::class.java,
-                        DB_NAME
-                    )
-                        .fallbackToDestructiveMigration()
-                        .build()
+                    db = appInstance?.applicationContext?.let {
+                        Room.databaseBuilder(
+                            it,
+                            HistoryDataBase::class.java,
+                            DB_NAME
+                        )
+                            .build()
+                    }
                 }
             }
             return db!!.historyDao()

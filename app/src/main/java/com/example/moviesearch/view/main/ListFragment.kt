@@ -35,7 +35,7 @@ class ListFragment : Fragment() {
                 beginTransaction()
                     .add(R.id.fragment_container, DetailsFragment.newInstance(movie.id))
                     .addToBackStack("")
-                    .commitAllowingStateLoss()
+                    .commit()
             }
         }
     })
@@ -52,7 +52,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.listFragmentRecyclerView.adapter = adapter
-        viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner, { renderData(it) })
+        viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner) { renderData(it) }
         showMoviesList()
     }
 

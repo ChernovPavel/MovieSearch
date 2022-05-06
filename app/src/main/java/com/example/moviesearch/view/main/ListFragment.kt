@@ -17,7 +17,7 @@ import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.ListViewModel
-import com.example.moviesearch.viewmodel.ListViewModelFactory
+import com.example.moviesearch.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
 class ListFragment : Fragment() {
@@ -27,7 +27,7 @@ class ListFragment : Fragment() {
     }
 
     @Inject
-    lateinit var lvmFactory: ListViewModelFactory
+    lateinit var lvmFactory: ViewModelFactory
 
     private val viewModel: ListViewModel by viewModels { lvmFactory }
 

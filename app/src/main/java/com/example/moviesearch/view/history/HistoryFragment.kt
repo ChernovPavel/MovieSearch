@@ -13,7 +13,7 @@ import com.example.moviesearch.databinding.FragmentHistoryBinding
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.HistoryViewModel
-import com.example.moviesearch.viewmodel.HistoryViewModelFactory
+import com.example.moviesearch.viewmodel.ViewModelFactory
 import javax.inject.Inject
 
 class HistoryFragment : Fragment() {
@@ -23,7 +23,7 @@ class HistoryFragment : Fragment() {
     }
 
     @Inject
-    lateinit var hvmFactory: HistoryViewModelFactory
+    lateinit var hvmFactory: ViewModelFactory
     private val viewModel: HistoryViewModel by viewModels { hvmFactory }
 
     private var _binding: FragmentHistoryBinding? = null

@@ -2,7 +2,6 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
@@ -11,7 +10,6 @@ import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
-import javax.inject.Inject
 
 class DetailsViewModel(
     private val detailsRepositoryImpl: DetailsRepository,
@@ -68,15 +66,4 @@ class DetailsViewModel(
     fun getNoteFromDB(movieId: Int) = Thread {
         noteLiveData.postValue(historyRepository.getNote(movieId))
     }.start()
-}
-
-class DetailsViewModelFactory @Inject constructor(
-    private val detailsRepo: DetailsRepository,
-    private val historyRepo: LocalRepository
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val viewModel = DetailsViewModel(detailsRepo, historyRepo)
-        return viewModel as T
-    }
 }

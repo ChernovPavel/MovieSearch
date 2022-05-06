@@ -5,7 +5,7 @@ import com.example.moviesearch.view.history.HistoryFragment
 import com.example.moviesearch.view.main.ListFragment
 import dagger.Component
 
-@Component(modules = [UiModule::class, DataModule::class])
+@Component(modules = [UiModule::class, DataModule::class, ViewModelModule::class])
 interface AppComponent {
 
  fun inject(listFragment: ListFragment)

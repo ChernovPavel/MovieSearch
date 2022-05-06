@@ -19,7 +19,7 @@ import com.example.moviesearch.utils.hideKeyboard
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
-import com.example.moviesearch.viewmodel.DetailsViewModelFactory
+import com.example.moviesearch.viewmodel.ViewModelFactory
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -37,7 +37,7 @@ class DetailsFragment : Fragment() {
     }
 
     @Inject
-    lateinit var dvmFactory: DetailsViewModelFactory
+    lateinit var dvmFactory: ViewModelFactory
 
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!

@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.model.MoviesResponse
 import com.example.moviesearch.repository.MainRepository
-import com.example.moviesearch.repository.MainRepositoryImpl
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertMoviesResponseToModel
 import retrofit2.Call
 import retrofit2.Response
+import javax.inject.Inject
 
 class ListViewModel(private val repositoryImpl: MainRepository) : ViewModel() {
 
@@ -49,7 +49,8 @@ class ListViewModel(private val repositoryImpl: MainRepository) : ViewModel() {
     }
 }
 
-class ListViewModelFactory(private val mainRepository: MainRepository) : ViewModelProvider.Factory {
+class ListViewModelFactory @Inject constructor(private val mainRepository: MainRepository) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = ListViewModel(mainRepository)

@@ -11,11 +11,13 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import javax.inject.Inject
+
 
 private const val RUSSIAN = "ru"
 private const val ENGLISH = "en"
 
-class RemoteDataSource {
+class RemoteDataSource @Inject constructor() {
 
     private lateinit var movieLanguage : String
     private val movieApi = Retrofit.Builder()

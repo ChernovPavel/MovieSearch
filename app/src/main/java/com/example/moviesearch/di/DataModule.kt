@@ -12,9 +12,4 @@ class DataModule {
     fun provideMainRepository(remoteDataSource: RemoteDataSource): MainRepository {
         return MainRepositoryImpl(remoteDataSource)
     }
-
-    @Provides
-    fun provideRemoteDataSource(): RemoteDataSource {
-        return RemoteDataSource()
-    }
 }

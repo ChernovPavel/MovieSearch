@@ -7,9 +7,4 @@ import dagger.Provides
 
 @Module
 class UiModule {
-
-    @Provides
-    fun provideListViewModelFactory(mainRepository: MainRepository): ListViewModelFactory {
-        return ListViewModelFactory(mainRepository)
-    }
 }

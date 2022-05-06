@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.moviesearch.R
+import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.hideKeyboard
@@ -20,13 +21,9 @@ import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
 import com.example.moviesearch.viewmodel.DetailsViewModelFactory
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
-
-    var _binding: FragmentDetailsBinding? = null
-    private val binding get() = _binding!!
-    private var movieId: Int = -1
-    private val viewModel: DetailsViewModel by viewModels { DetailsViewModelFactory() }
 
     companion object {
         const val MOVIE_ID = "movieId"
@@ -39,9 +36,18 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    @Inject
+    lateinit var dvmFactory: DetailsViewModelFactory
+
+    var _binding: FragmentDetailsBinding? = null
+    private val binding get() = _binding!!
+    private var movieId: Int = -1
+    private val viewModel: DetailsViewModel by viewModels { dvmFactory }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as App).appComponent.inject(this)
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }

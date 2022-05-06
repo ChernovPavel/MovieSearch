@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
+import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentHistoryBinding
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
@@ -34,6 +35,7 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as App).appComponent.inject(this)
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }

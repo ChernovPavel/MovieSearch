@@ -46,15 +46,10 @@ class ListFragment : Fragment() {
         }
     })
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (requireActivity().applicationContext as App).appComponent.inject(this)
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as App).appComponent.inject(this)
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }

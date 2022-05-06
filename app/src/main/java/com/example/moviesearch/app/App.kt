@@ -2,10 +2,15 @@ package com.example.moviesearch.app
 
 import android.app.Application
 import androidx.room.Room
+import com.example.moviesearch.di.DaggerAppComponent
+
 import com.example.moviesearch.room.HistoryDao
 import com.example.moviesearch.room.HistoryDataBase
 
 class App : Application() {
+
+    val appComponent = DaggerAppComponent.create()
+
     override fun onCreate() {
         super.onCreate()
         appInstance = this

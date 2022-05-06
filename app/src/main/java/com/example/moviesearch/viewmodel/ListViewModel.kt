@@ -3,12 +3,9 @@ package com.example.moviesearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviesearch.app.App
 import com.example.moviesearch.model.MoviesResponse
-import com.example.moviesearch.repository.LocalRepositoryImpl
-import com.example.moviesearch.repository.MainRepo
+import com.example.moviesearch.repository.MainRepository
 import com.example.moviesearch.repository.MainRepositoryImpl
-import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
@@ -16,7 +13,7 @@ import com.example.moviesearch.utils.convertMoviesResponseToModel
 import retrofit2.Call
 import retrofit2.Response
 
-class ListViewModel(private val repositoryImpl: MainRepo) : ViewModel() {
+class ListViewModel(private val repositoryImpl: MainRepository) : ViewModel() {
 
     val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
 
@@ -52,12 +49,10 @@ class ListViewModel(private val repositoryImpl: MainRepo) : ViewModel() {
     }
 }
 
-class ListViewModelFactory() : ViewModelProvider.Factory {
-
-    private val mainRepo = MainRepositoryImpl(RemoteDataSource())
+class ListViewModelFactory(private val mainRepository: MainRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val viewModel = ListViewModel(mainRepo)
+        val viewModel = ListViewModel(mainRepository)
         return viewModel as T
     }
 }

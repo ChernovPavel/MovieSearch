@@ -2,22 +2,19 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviesearch.app.App.Companion.getHistoryDao
+import androidx.lifecycle.ViewModelProvider
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
-import com.example.moviesearch.repository.DetailsRepositoryImpl
 import com.example.moviesearch.repository.LocalRepository
-import com.example.moviesearch.repository.LocalRepositoryImpl
-import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
 
 class DetailsViewModel(
-    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource()),
-    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
+    private val detailsRepositoryImpl: DetailsRepository,
+    private val historyRepository: LocalRepository
 ) : ViewModel() {
 
     val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
@@ -70,4 +67,14 @@ class DetailsViewModel(
     fun getNoteFromDB(movieId: Int) = Thread {
         noteLiveData.postValue(historyRepository.getNote(movieId))
     }.start()
+}
+
+class DetailsViewModelFactory(
+    private val detailsRepo: DetailsRepository,
+    private val historyRepo: LocalRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val viewModel = DetailsViewModel(detailsRepo, historyRepo)
+        return viewModel as T
+    }
 }

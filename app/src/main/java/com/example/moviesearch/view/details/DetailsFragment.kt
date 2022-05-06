@@ -10,14 +10,19 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.moviesearch.R
+import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.repository.DetailsRepositoryImpl
+import com.example.moviesearch.repository.LocalRepositoryImpl
+import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.hideKeyboard
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.DetailsViewModel
+import com.example.moviesearch.viewmodel.DetailsViewModelFactory
 import com.squareup.picasso.Picasso
 
 class DetailsFragment : Fragment() {
@@ -25,8 +30,11 @@ class DetailsFragment : Fragment() {
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private var movieId: Int = -1
-    private val viewModel: DetailsViewModel by lazy {
-        ViewModelProvider(this)[DetailsViewModel::class.java]
+    private val viewModel: DetailsViewModel by viewModels {
+        DetailsViewModelFactory(
+            DetailsRepositoryImpl(RemoteDataSource()),
+            LocalRepositoryImpl(App.getHistoryDao())
+        )
     }
 
     companion object {

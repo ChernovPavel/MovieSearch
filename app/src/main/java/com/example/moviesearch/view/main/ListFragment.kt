@@ -6,16 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.repository.MainRepositoryImpl
+import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.view.settings.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.viewmodel.AppState
-import com.example.moviesearch.viewmodel.MainViewModel
+import com.example.moviesearch.viewmodel.ListViewModel
+import com.example.moviesearch.viewmodel.ListViewModelFactory
 
 class ListFragment : Fragment() {
 
@@ -23,8 +26,8 @@ class ListFragment : Fragment() {
         fun newInstance() = ListFragment()
     }
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+    private val viewModel: ListViewModel by viewModels {
+        ListViewModelFactory(MainRepositoryImpl(RemoteDataSource()))
     }
 
     private var _binding: FragmentListBinding? = null

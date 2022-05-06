@@ -5,21 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
+import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentHistoryBinding
+import com.example.moviesearch.repository.LocalRepositoryImpl
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.HistoryViewModel
+import com.example.moviesearch.viewmodel.HistoryViewModelFactory
 
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HistoryViewModel by lazy {
-        ViewModelProvider(this)[HistoryViewModel::class.java]
+    private val viewModel: HistoryViewModel by viewModels {
+        HistoryViewModelFactory(LocalRepositoryImpl(App.getHistoryDao()))
     }
     private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
 

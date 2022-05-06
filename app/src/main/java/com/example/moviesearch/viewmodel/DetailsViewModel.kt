@@ -10,17 +10,18 @@ import com.example.moviesearch.repository.DetailsRepositoryImpl
 import com.example.moviesearch.repository.LocalRepository
 import com.example.moviesearch.repository.LocalRepositoryImpl
 import com.example.moviesearch.repository.api.RemoteDataSource
+import com.example.moviesearch.utils.CORRUPTED_DATA
+import com.example.moviesearch.utils.REQUEST_ERROR
+import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
 
-private const val SERVER_ERROR = "Ошибка сервера"
-private const val REQUEST_ERROR = "Ошибка запроса на сервер"
-private const val CORRUPTED_DATA = "Неполные данные"
+class DetailsViewModel(
+    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource()),
+    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
+) : ViewModel() {
 
-class DetailsViewModel : ViewModel() {
     val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
     val noteLiveData: MutableLiveData<String> = MutableLiveData()
-    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
-    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 
     fun getMovieFromAPI(movieId: Int) {
         detailsLiveData.value = AppState.Loading

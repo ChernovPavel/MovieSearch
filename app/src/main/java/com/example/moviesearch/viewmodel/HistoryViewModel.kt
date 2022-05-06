@@ -7,9 +7,10 @@ import com.example.moviesearch.repository.LocalRepository
 import com.example.moviesearch.repository.LocalRepositoryImpl
 
 class HistoryViewModel(
-    val historyLiveData: MutableLiveData<AppState> = MutableLiveData(),
     private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 ) : ViewModel() {
+
+    val historyLiveData: MutableLiveData<AppState> = MutableLiveData()
 
     fun getAllHistory() {
         historyLiveData.value = AppState.Loading

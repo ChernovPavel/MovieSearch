@@ -6,18 +6,18 @@ import com.example.moviesearch.model.MoviesResponse
 import com.example.moviesearch.repository.MainRepo
 import com.example.moviesearch.repository.MainRepositoryImpl
 import com.example.moviesearch.repository.api.RemoteDataSource
+import com.example.moviesearch.utils.CORRUPTED_DATA
+import com.example.moviesearch.utils.REQUEST_ERROR
+import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertMoviesResponseToModel
 import retrofit2.Call
 import retrofit2.Response
 
-private const val SERVER_ERROR = "Ошибка сервера"
-private const val REQUEST_ERROR = "Ошибка запроса на сервер"
-private const val CORRUPTED_DATA = "Неполные данные"
-
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val repositoryImpl: MainRepo = MainRepositoryImpl(RemoteDataSource())
+) : ViewModel() {
 
     val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
-    private val repositoryImpl: MainRepo = MainRepositoryImpl(RemoteDataSource())
 
     fun getListTopMoviesFromAPI(isRuLanguage: Boolean) {
         liveListMoviesToObserve.value = AppState.Loading

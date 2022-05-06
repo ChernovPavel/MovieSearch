@@ -3,9 +3,8 @@ package com.example.moviesearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.moviesearch.app.App
 import com.example.moviesearch.repository.LocalRepository
-import com.example.moviesearch.repository.LocalRepositoryImpl
+import javax.inject.Inject
 
 class HistoryViewModel(private val historyRepository: LocalRepository) : ViewModel() {
 
@@ -19,9 +18,8 @@ class HistoryViewModel(private val historyRepository: LocalRepository) : ViewMod
     }
 }
 
-class HistoryViewModelFactory : ViewModelProvider.Factory {
-
-    private val localRepo = LocalRepositoryImpl(App.getHistoryDao())
+class HistoryViewModelFactory @Inject constructor(private val localRepo: LocalRepository) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = HistoryViewModel(localRepo)

@@ -13,13 +13,21 @@ import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.HistoryViewModel
 import com.example.moviesearch.viewmodel.HistoryViewModelFactory
+import javax.inject.Inject
 
 class HistoryFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = HistoryFragment()
+    }
+
+    @Inject
+    lateinit var hvmFactory: HistoryViewModelFactory
+    private val viewModel: HistoryViewModel by viewModels { hvmFactory }
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HistoryViewModel by viewModels { HistoryViewModelFactory() }
     private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
 
     override fun onCreateView(
@@ -74,11 +82,5 @@ class HistoryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            HistoryFragment()
     }
 }

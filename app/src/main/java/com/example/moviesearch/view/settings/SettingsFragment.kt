@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.moviesearch.databinding.FragmentSettingsBinding
-
-const val IS_RUSSIAN_LANGUAGE = "IS_RUSSIAN_LANGUAGE"
+import com.example.moviesearch.utils.IS_RUSSIAN_LANGUAGE
 
 class SettingsFragment : Fragment() {
 

@@ -15,7 +15,7 @@ import com.example.moviesearch.repository.MainRepositoryImpl
 import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
-import com.example.moviesearch.view.settings.IS_RUSSIAN_LANGUAGE
+import com.example.moviesearch.utils.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.ListViewModel
 import com.example.moviesearch.viewmodel.ListViewModelFactory

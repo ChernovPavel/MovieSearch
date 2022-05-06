@@ -12,12 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.moviesearch.R
-import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentDetailsBinding
 import com.example.moviesearch.model.Movie
-import com.example.moviesearch.repository.DetailsRepositoryImpl
-import com.example.moviesearch.repository.LocalRepositoryImpl
-import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.hideKeyboard
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
@@ -30,12 +26,7 @@ class DetailsFragment : Fragment() {
     var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private var movieId: Int = -1
-    private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModelFactory(
-            DetailsRepositoryImpl(RemoteDataSource()),
-            LocalRepositoryImpl(App.getHistoryDao())
-        )
-    }
+    private val viewModel: DetailsViewModel by viewModels { DetailsViewModelFactory() }
 
     companion object {
         const val MOVIE_ID = "movieId"

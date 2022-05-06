@@ -3,10 +3,14 @@ package com.example.moviesearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.moviesearch.app.App
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
+import com.example.moviesearch.repository.DetailsRepositoryImpl
 import com.example.moviesearch.repository.LocalRepository
+import com.example.moviesearch.repository.LocalRepositoryImpl
+import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
@@ -69,10 +73,11 @@ class DetailsViewModel(
     }.start()
 }
 
-class DetailsViewModelFactory(
-    private val detailsRepo: DetailsRepository,
-    private val historyRepo: LocalRepository
-) : ViewModelProvider.Factory {
+class DetailsViewModelFactory : ViewModelProvider.Factory {
+
+    private val detailsRepo = DetailsRepositoryImpl(RemoteDataSource())
+    private val historyRepo = LocalRepositoryImpl(App.getHistoryDao())
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = DetailsViewModel(detailsRepo, historyRepo)
         return viewModel as T

@@ -26,9 +26,7 @@ class ListFragment : Fragment() {
         fun newInstance() = ListFragment()
     }
 
-    private val viewModel: ListViewModel by viewModels {
-        ListViewModelFactory(MainRepositoryImpl(RemoteDataSource()))
-    }
+    private val viewModel: ListViewModel by viewModels { ListViewModelFactory() }
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!

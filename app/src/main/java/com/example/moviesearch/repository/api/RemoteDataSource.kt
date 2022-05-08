@@ -3,32 +3,16 @@ package com.example.moviesearch.repository.api
 import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse
-import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import javax.inject.Inject
 
 
 private const val RUSSIAN = "ru"
 private const val ENGLISH = "en"
 
-class RemoteDataSource @Inject constructor() {
+class RemoteDataSource @Inject constructor(private val movieApi: MovieAPI) {
 
-    private lateinit var movieLanguage : String
-    private val movieApi = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/")
-        .addConverterFactory(
-            GsonConverterFactory.create(
-                GsonBuilder().setLenient().create()
-            )
-        )
-        .client(createOkHttpClient(MovieApiInterceptor()))
-        .build().create(MovieAPI::class.java)
+    private lateinit var movieLanguage: String
 
     fun getMovieDetails(id: Int, callback: Callback<MovieDTO>) {
         movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY).enqueue(callback)
@@ -37,21 +21,5 @@ class RemoteDataSource @Inject constructor() {
     fun getListTopMovies(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
         movieLanguage = if (isRuLanguage) RUSSIAN else ENGLISH
         movieApi.getTopMovies(movieLanguage, BuildConfig.MOVIE_API_KEY).enqueue(callback)
-    }
-
-    private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {
-        val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(interceptor)
-        httpClient.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-
-        return httpClient.build()
-    }
-
-    inner class MovieApiInterceptor : Interceptor {
-
-        @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            return chain.proceed(chain.request())
-        }
     }
 }

@@ -6,7 +6,7 @@ import com.example.moviesearch.view.main.ListFragment
 import dagger.Component
 
 @AppScope
-@Component(modules = [UiModule::class, DataModule::class, ViewModelModule::class])
+@Component(modules = [UiModule::class, DataModule::class, ViewModelModule::class, ApiModule::class])
 interface AppComponent {
 
  fun inject(listFragment: ListFragment)

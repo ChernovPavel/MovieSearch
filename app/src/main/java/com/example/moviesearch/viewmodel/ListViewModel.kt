@@ -3,7 +3,7 @@ package com.example.moviesearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moviesearch.model.MoviesResponse
-import com.example.moviesearch.repository.MainRepository
+import com.example.moviesearch.repository.ListRepository
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
@@ -11,13 +11,13 @@ import com.example.moviesearch.utils.convertMoviesResponseToModel
 import retrofit2.Call
 import retrofit2.Response
 
-class ListViewModel(private val repositoryImpl: MainRepository) : ViewModel() {
+class ListViewModel(private val listRepository: ListRepository) : ViewModel() {
 
     val liveListMoviesToObserve: MutableLiveData<AppState> = MutableLiveData()
 
     fun getListTopMoviesFromAPI(isRuLanguage: Boolean) {
         liveListMoviesToObserve.value = AppState.Loading
-        repositoryImpl.getTopMoviesFromServer(isRuLanguage, callback)
+        listRepository.getTopMoviesFromServer(isRuLanguage, callback)
     }
 
     private val callback = object : retrofit2.Callback<MoviesResponse> {

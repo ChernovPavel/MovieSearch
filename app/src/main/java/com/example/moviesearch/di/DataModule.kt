@@ -11,8 +11,8 @@ import dagger.Provides
 class DataModule {
 
     @Provides
-    fun provideMainRepository(remoteDataSource: RemoteDataSource): MainRepository {
-        return MainRepositoryImpl(remoteDataSource)
+    fun provideMainRepository(remoteDataSource: RemoteDataSource): ListRepository {
+        return ListRepositoryImpl(remoteDataSource)
     }
 
     @Provides
@@ -20,6 +20,7 @@ class DataModule {
         return DetailsRepositoryImpl(remoteDataSource)
     }
 
+    @AppScope
     @Provides
     fun provideLocalRepository(localDataSource: HistoryDao): LocalRepository {
         return LocalRepositoryImpl(localDataSource)

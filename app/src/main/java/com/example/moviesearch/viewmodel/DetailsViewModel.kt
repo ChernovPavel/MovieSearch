@@ -12,8 +12,8 @@ import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
 
 class DetailsViewModel(
-    private val detailsRepositoryImpl: DetailsRepository,
-    private val historyRepository: LocalRepository
+    private val detailsRepository: DetailsRepository,
+    private val localRepository: LocalRepository
 ) : ViewModel() {
 
     val detailsLiveData: MutableLiveData<AppState> = MutableLiveData()
@@ -21,7 +21,7 @@ class DetailsViewModel(
 
     fun getMovieFromAPI(movieId: Int) {
         detailsLiveData.value = AppState.Loading
-        detailsRepositoryImpl.getMovieDetailsFromServer(movieId, callback)
+        detailsRepository.getMovieDetailsFromServer(movieId, callback)
     }
 
     private val callback = object : retrofit2.Callback<MovieDTO> {
@@ -57,13 +57,13 @@ class DetailsViewModel(
         }
     }
 
-    fun saveMovieToDB(movie: Movie) = Thread { historyRepository.saveEntity(movie) }.start()
+    fun saveMovieToDB(movie: Movie) = Thread { localRepository.saveEntity(movie) }.start()
 
     fun saveNoteToDB(note: String, movieId: Int) = Thread {
-        historyRepository.saveNote(note, movieId)
+        localRepository.saveNote(note, movieId)
     }.start()
 
     fun getNoteFromDB(movieId: Int) = Thread {
-        noteLiveData.postValue(historyRepository.getNote(movieId))
+        noteLiveData.postValue(localRepository.getNote(movieId))
     }.start()
 }

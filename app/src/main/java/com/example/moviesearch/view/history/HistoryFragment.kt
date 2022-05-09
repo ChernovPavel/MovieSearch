@@ -5,28 +5,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
+import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentHistoryBinding
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.HistoryViewModel
+import com.example.moviesearch.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class HistoryFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = HistoryFragment()
+    }
+
+    @Inject
+    lateinit var hvmFactory: ViewModelFactory
+    private val viewModel: HistoryViewModel by viewModels { hvmFactory }
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HistoryViewModel by lazy {
-        ViewModelProvider(this)[HistoryViewModel::class.java]
-    }
     private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as App).appComponent.inject(this)
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -75,11 +84,5 @@ class HistoryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            HistoryFragment()
     }
 }

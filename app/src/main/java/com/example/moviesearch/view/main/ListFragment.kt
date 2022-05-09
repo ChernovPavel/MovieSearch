@@ -6,16 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
+import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
-import com.example.moviesearch.view.settings.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.viewmodel.AppState
-import com.example.moviesearch.viewmodel.MainViewModel
+import com.example.moviesearch.viewmodel.ListViewModel
+import com.example.moviesearch.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class ListFragment : Fragment() {
 
@@ -23,9 +26,10 @@ class ListFragment : Fragment() {
         fun newInstance() = ListFragment()
     }
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
-    }
+    @Inject
+    lateinit var lvmFactory: ViewModelFactory
+
+    private val viewModel: ListViewModel by viewModels { lvmFactory }
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
@@ -42,10 +46,10 @@ class ListFragment : Fragment() {
         }
     })
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as App).appComponent.inject(this)
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }

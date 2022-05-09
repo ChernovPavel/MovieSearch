@@ -2,19 +2,20 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moviesearch.app.App.Companion.getHistoryDao
+import androidx.lifecycle.viewModelScope
 import com.example.moviesearch.repository.LocalRepository
-import com.example.moviesearch.repository.LocalRepositoryImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class HistoryViewModel(
-    val historyLiveData: MutableLiveData<AppState> = MutableLiveData(),
-    private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
-) : ViewModel() {
+class HistoryViewModel(private val localRepository: LocalRepository) : ViewModel() {
+
+    val historyLiveData: MutableLiveData<AppState> = MutableLiveData()
 
     fun getAllHistory() {
         historyLiveData.value = AppState.Loading
-        Thread {
-            historyLiveData.postValue(AppState.Success(historyRepository.getAllHistory()))
-        }.start()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            historyLiveData.postValue(AppState.Success(localRepository.getAllHistory()))
+        }
     }
 }

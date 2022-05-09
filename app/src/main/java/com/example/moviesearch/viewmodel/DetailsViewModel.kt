@@ -2,14 +2,16 @@ package com.example.moviesearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
 import com.example.moviesearch.repository.LocalRepository
 import com.example.moviesearch.utils.CORRUPTED_DATA
-import com.example.moviesearch.utils.REQUEST_ERROR
 import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
+import kotlinx.coroutines.launch
+import java.io.IOException
 
 class DetailsViewModel(
     private val detailsRepository: DetailsRepository,
@@ -21,26 +23,17 @@ class DetailsViewModel(
 
     fun getMovieFromAPI(movieId: Int) {
         detailsLiveData.value = AppState.Loading
-        detailsRepository.getMovieDetailsFromServer(movieId, callback)
-    }
 
-    private val callback = object : retrofit2.Callback<MovieDTO> {
-        override fun onResponse(
-            call: retrofit2.Call<MovieDTO>,
-            response: retrofit2.Response<MovieDTO>,
-        ) {
-            val serverResponse: MovieDTO? = response.body()
-            detailsLiveData.postValue(
-                if (response.isSuccessful && serverResponse != null) {
-                    checkResponse(serverResponse)
-                } else {
-                    AppState.Error(Throwable(SERVER_ERROR))
+        viewModelScope.launch {
+            try {
+                val responseBody = detailsRepository.getMovieDetailsFromServer(movieId).body()
+
+                responseBody?.let {
+                    detailsLiveData.postValue(checkResponse(it))
                 }
-            )
-        }
-
-        override fun onFailure(call: retrofit2.Call<MovieDTO>, t: Throwable) {
-            detailsLiveData.postValue(AppState.Error(Throwable(t.message ?: REQUEST_ERROR)))
+            } catch (exp: IOException) {
+                detailsLiveData.postValue(AppState.Error(Throwable(SERVER_ERROR)))
+            }
         }
     }
 

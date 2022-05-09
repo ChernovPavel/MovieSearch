@@ -4,6 +4,7 @@ import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse
 import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -14,8 +15,8 @@ class RemoteDataSource @Inject constructor(private val movieApi: MovieAPI) {
 
     private lateinit var movieLanguage: String
 
-    fun getMovieDetails(id: Int, callback: Callback<MovieDTO>) {
-        movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY).enqueue(callback)
+    suspend fun getMovieDetails(id: Int): Response<MovieDTO> {
+       return movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY)
     }
 
     fun getListTopMovies(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {

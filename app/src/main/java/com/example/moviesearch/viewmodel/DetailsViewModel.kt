@@ -10,7 +10,9 @@ import com.example.moviesearch.repository.LocalRepository
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class DetailsViewModel(
@@ -50,13 +52,27 @@ class DetailsViewModel(
         }
     }
 
-    fun saveMovieToDB(movie: Movie) = Thread { localRepository.saveEntity(movie) }.start()
+    fun saveMovieToDB(movie: Movie) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                localRepository.saveEntity(movie)
+            }
+        }
+    }
 
-    fun saveNoteToDB(note: String, movieId: Int) = Thread {
-        localRepository.saveNote(note, movieId)
-    }.start()
+    fun saveNoteToDB(note: String, movieId: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                localRepository.saveNote(note, movieId)
+            }
+        }
+    }
 
-    fun getNoteFromDB(movieId: Int) = Thread {
-        noteLiveData.postValue(localRepository.getNote(movieId))
-    }.start()
+    fun getNoteFromDB(movieId: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                noteLiveData.postValue(localRepository.getNote(movieId))
+            }
+        }
+    }
 }

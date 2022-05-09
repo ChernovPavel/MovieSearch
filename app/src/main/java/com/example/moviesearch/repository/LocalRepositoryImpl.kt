@@ -7,19 +7,19 @@ import com.example.moviesearch.utils.convertHistoryEntityToMovie
 import com.example.moviesearch.utils.convertMovieToEntity
 
 class LocalRepositoryImpl(private val localDataSource: HistoryDao): LocalRepository {
-    override fun getAllHistory(): List<Movie> {
+    override suspend fun getAllHistory(): List<Movie> {
         return convertHistoryEntityToMovie(localDataSource.all())
     }
 
-    override fun saveEntity(movie: Movie) {
+    override suspend fun saveEntity(movie: Movie) {
         localDataSource.insert(convertMovieToEntity(movie))
     }
 
-    override fun saveNote(note: String, movieId: Int) {
+    override suspend fun saveNote(note: String, movieId: Int) {
         localDataSource.insertNote(NoteEntity(movieId, note))
     }
 
-    override fun getNote(movieId: Int): String {
+    override suspend fun getNote(movieId: Int): String {
         return localDataSource.getNote(movieId)
     }
 }

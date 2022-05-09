@@ -1,7 +1,8 @@
 package com.example.moviesearch.repository
 
 import com.example.moviesearch.model.MovieDTO
+import retrofit2.Response
 
 interface DetailsRepository {
-    fun getMovieDetailsFromServer(id: Int, callback: retrofit2.Callback<MovieDTO>)
+    suspend fun getMovieDetailsFromServer(id: Int): Response<MovieDTO>
 }

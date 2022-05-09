@@ -2,11 +2,11 @@ package com.example.moviesearch.repository
 
 import com.example.moviesearch.model.MoviesResponse
 import com.example.moviesearch.repository.api.RemoteDataSource
-import retrofit2.Callback
+import retrofit2.Response
 
 class ListRepositoryImpl(private val remoteDataSource: RemoteDataSource) : ListRepository {
 
-    override fun getTopMoviesFromServer(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
-        remoteDataSource.getListTopMovies(isRuLanguage, callback)
+    override suspend fun getTopMoviesFromServer(isRuLanguage: Boolean): Response<MoviesResponse> {
+        return remoteDataSource.getListTopMovies(isRuLanguage)
     }
 }

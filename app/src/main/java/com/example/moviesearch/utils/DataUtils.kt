@@ -11,11 +11,11 @@ fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
             movieDTO.id!!,
             movieDTO.title!!,
             movieDTO.overview!!,
-            movieDTO.release_date!!,
+            movieDTO.releaseDate!!,
             movieDTO.genres?.get(0)?.name!!,
-            movieDTO.backdrop_path,
-            movieDTO.poster_path,
-            movieDTO.vote_average
+            movieDTO.backdropPath,
+            movieDTO.posterPath,
+            movieDTO.voteAverage
         )
     )
 }
@@ -26,11 +26,11 @@ fun convertMoviesResponseToModel(listMovies: MoviesResponse): List<Movie> {
             it.id!!,
             it.title!!,
             it.overview!!,
-            it.release_date!!,
+            it.releaseDate!!,
             "",
-            it.backdrop_path!!,
-            it.poster_path!!,
-            it.vote_average
+            it.backdropPath!!,
+            it.posterPath!!,
+            it.voteAverage
         )
     }
     return list

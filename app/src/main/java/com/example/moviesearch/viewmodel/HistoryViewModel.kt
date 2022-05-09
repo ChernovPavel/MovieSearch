@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviesearch.repository.LocalRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HistoryViewModel(private val localRepository: LocalRepository) : ViewModel() {
 
@@ -15,10 +14,8 @@ class HistoryViewModel(private val localRepository: LocalRepository) : ViewModel
     fun getAllHistory() {
         historyLiveData.value = AppState.Loading
 
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                historyLiveData.postValue(AppState.Success(localRepository.getAllHistory()))
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            historyLiveData.postValue(AppState.Success(localRepository.getAllHistory()))
         }
     }
 }

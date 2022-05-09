@@ -12,7 +12,6 @@ import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class DetailsViewModel(
@@ -42,9 +41,9 @@ class DetailsViewModel(
     private fun checkResponse(movieDTO: MovieDTO): AppState {
         return if (movieDTO.title == null ||
             movieDTO.overview == null ||
-            movieDTO.release_date == null ||
+            movieDTO.releaseDate == null ||
             movieDTO.genres?.get(0)?.name == null ||
-            movieDTO.backdrop_path == null
+            movieDTO.backdropPath == null
         ) {
             AppState.Error(Throwable(CORRUPTED_DATA))
         } else {
@@ -53,26 +52,20 @@ class DetailsViewModel(
     }
 
     fun saveMovieToDB(movie: Movie) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                localRepository.saveEntity(movie)
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            localRepository.saveEntity(movie)
         }
     }
 
     fun saveNoteToDB(note: String, movieId: Int) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                localRepository.saveNote(note, movieId)
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            localRepository.saveNote(note, movieId)
         }
     }
 
     fun getNoteFromDB(movieId: Int) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                noteLiveData.postValue(localRepository.getNote(movieId))
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            noteLiveData.postValue(localRepository.getNote(movieId))
         }
     }
 }

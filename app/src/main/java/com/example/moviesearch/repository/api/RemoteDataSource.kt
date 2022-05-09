@@ -3,7 +3,6 @@ package com.example.moviesearch.repository.api
 import com.example.moviesearch.BuildConfig
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse
-import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -19,8 +18,8 @@ class RemoteDataSource @Inject constructor(private val movieApi: MovieAPI) {
        return movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY)
     }
 
-    fun getListTopMovies(isRuLanguage: Boolean, callback: Callback<MoviesResponse>) {
+    suspend fun getListTopMovies(isRuLanguage: Boolean): Response<MoviesResponse> {
         movieLanguage = if (isRuLanguage) RUSSIAN else ENGLISH
-        movieApi.getTopMovies(movieLanguage, BuildConfig.MOVIE_API_KEY).enqueue(callback)
+        return movieApi.getTopMovies(movieLanguage, BuildConfig.MOVIE_API_KEY)
     }
 }

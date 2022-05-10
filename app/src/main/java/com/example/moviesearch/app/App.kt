@@ -2,6 +2,7 @@ package com.example.moviesearch.app
 
 import android.app.Application
 import androidx.room.Room
+import com.example.moviesearch.di.AppComponent
 import com.example.moviesearch.di.DaggerAppComponent
 
 import com.example.moviesearch.room.HistoryDao
@@ -9,7 +10,7 @@ import com.example.moviesearch.room.HistoryDataBase
 
 class App : Application() {
 
-    val appComponent = DaggerAppComponent.create()
+    val appComponent: AppComponent = DaggerAppComponent.create()
 
     override fun onCreate() {
         super.onCreate()

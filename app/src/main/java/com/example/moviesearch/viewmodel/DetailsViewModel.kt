@@ -10,7 +10,6 @@ import com.example.moviesearch.repository.LocalRepository
 import com.example.moviesearch.utils.CORRUPTED_DATA
 import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -27,13 +26,15 @@ class DetailsViewModel(
 
         viewModelScope.launch {
             try {
-                val responseBody = detailsRepository.getMovieDetailsFromServer(movieId).body()
-
-                responseBody?.let {
-                    detailsLiveData.postValue(checkResponse(it))
+                val response = detailsRepository.getMovieDetailsFromServer(movieId)
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    data?.let {
+                        detailsLiveData.value = checkResponse(it)
+                    }
                 }
             } catch (exp: IOException) {
-                detailsLiveData.postValue(AppState.Error(Throwable(SERVER_ERROR)))
+                detailsLiveData.value = AppState.Error(Throwable(SERVER_ERROR))
             }
         }
     }

@@ -20,13 +20,15 @@ class ListViewModel(private val listRepository: ListRepository) : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val responseBody = listRepository.getTopMoviesFromServer(isRuLanguage).body()
-
-                responseBody?.let {
-                    liveListMoviesToObserve.postValue(checkResponse(it))
+                val response = listRepository.getTopMoviesFromServer(isRuLanguage)
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    data?.let {
+                        liveListMoviesToObserve.value = checkResponse(it)
+                    }
                 }
             } catch (exp: IOException) {
-                liveListMoviesToObserve.postValue(AppState.Error(Throwable(SERVER_ERROR)))
+                liveListMoviesToObserve.value = AppState.Error(Throwable(SERVER_ERROR))
             }
         }
     }

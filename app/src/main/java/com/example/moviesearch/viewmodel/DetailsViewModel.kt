@@ -52,19 +52,19 @@ class DetailsViewModel(
     }
 
     fun saveMovieToDB(movie: Movie) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             localRepository.saveEntity(movie)
         }
     }
 
     fun saveNoteToDB(note: String, movieId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             localRepository.saveNote(note, movieId)
         }
     }
 
     fun getNoteFromDB(movieId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             noteLiveData.postValue(localRepository.getNote(movieId))
         }
     }

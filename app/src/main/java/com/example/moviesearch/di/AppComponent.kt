@@ -4,9 +4,17 @@ import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.view.history.HistoryFragment
 import com.example.moviesearch.view.main.ListFragment
 import dagger.Component
+import javax.inject.Singleton
 
-@AppScope
-@Component(modules = [DataModule::class, ViewModelModule::class, ApiModule::class])
+@Singleton
+@Component(
+ modules = [
+  AppModule::class,
+  DataModule::class,
+  ViewModelModule::class,
+  ApiModule::class
+ ]
+)
 interface AppComponent {
 
  fun inject(listFragment: ListFragment)

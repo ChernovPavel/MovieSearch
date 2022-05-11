@@ -4,7 +4,6 @@ import com.example.moviesearch.repository.api.MovieAPI
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -34,17 +33,10 @@ class ApiModule {
     }
 
     @Provides
-    fun provideOkHttpClient(interceptor: Interceptor): OkHttpClient {
-
-        val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(interceptor)
-        httpClient.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-
-        return httpClient.build()
-    }
-
-    @Provides
-    fun provideInterceptor(): Interceptor {
-        return Interceptor { chain -> chain.proceed(chain.request()) }
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor()
+            .setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
     }
 }

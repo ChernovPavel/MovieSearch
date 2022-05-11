@@ -23,7 +23,7 @@ class DataModule {
         return DetailsRepositoryImpl(remoteDataSource)
     }
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideLocalRepository(localDataSource: HistoryDao): LocalRepository {
         return LocalRepositoryImpl(localDataSource)

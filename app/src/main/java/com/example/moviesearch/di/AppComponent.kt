@@ -4,9 +4,8 @@ import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.view.history.HistoryFragment
 import com.example.moviesearch.view.main.ListFragment
 import dagger.Component
-import javax.inject.Singleton
 
-@Singleton
+@AppScope
 @Component(
  modules = [
   AppModule::class,

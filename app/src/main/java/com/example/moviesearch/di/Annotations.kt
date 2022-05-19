@@ -11,4 +11,12 @@ annotation class ViewModelKey(val value: KClass<out ViewModel>)
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class AppScope
+annotation class ListScope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class DetailsScope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class HistoryScope

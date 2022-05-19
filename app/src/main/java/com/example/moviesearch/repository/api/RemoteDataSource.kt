@@ -5,17 +5,19 @@ import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
 private const val RUSSIAN = "ru"
 private const val ENGLISH = "en"
 
+@Singleton
 class RemoteDataSource @Inject constructor(private val movieApi: MovieAPI) {
 
     private lateinit var movieLanguage: String
 
     suspend fun getMovieDetails(id: Int): Response<MovieDTO> {
-       return movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY)
+        return movieApi.getMovie(id, BuildConfig.MOVIE_API_KEY)
     }
 
     suspend fun getListTopMovies(isRuLanguage: Boolean): Response<MoviesResponse> {

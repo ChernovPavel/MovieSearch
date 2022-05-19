@@ -5,26 +5,21 @@ import com.example.moviesearch.di.ListScope
 import com.example.moviesearch.di.ViewModelKey
 import com.example.moviesearch.repository.ListRepository
 import com.example.moviesearch.repository.ListRepositoryImpl
-import com.example.moviesearch.repository.api.RemoteDataSource
 import com.example.moviesearch.viewmodel.ListViewModel
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Module
-class ListModule {
+interface ListModule {
 
     @ListScope
-    @Provides
-    fun provideListRepository(remoteDataSource: RemoteDataSource): ListRepository {
-        return ListRepositoryImpl(remoteDataSource)
-    }
+    @Binds
+    fun provideListRepository(listRepository: ListRepositoryImpl): ListRepository
 
     @ListScope
     @IntoMap
     @ViewModelKey(ListViewModel::class)
-    @Provides
-    fun provideListViewModel(listRepository: ListRepository): ViewModel {
-        return ListViewModel(listRepository)
-    }
+    @Binds
+    fun provideListViewModel(listViewModel: ListViewModel): ViewModel
 }

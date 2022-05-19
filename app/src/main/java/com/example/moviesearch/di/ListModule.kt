@@ -12,11 +12,13 @@ import dagger.multibindings.IntoMap
 @Module
 class ListModule {
 
+    @ListScope
     @Provides
     fun provideListRepository(remoteDataSource: RemoteDataSource): ListRepository {
         return ListRepositoryImpl(remoteDataSource)
     }
 
+    @ListScope
     @IntoMap
     @ViewModelKey(ListViewModel::class)
     @Provides

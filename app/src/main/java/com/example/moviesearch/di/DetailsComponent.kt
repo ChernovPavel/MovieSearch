@@ -11,6 +11,6 @@ import dagger.Subcomponent
 )
 interface DetailsComponent {
 
-    fun inject(listFragment: DetailsFragment)
+    fun inject(detailsFragment: DetailsFragment)
 
 }

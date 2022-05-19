@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Module
-class ViewModelModule {
+class HistoryModule {
 
     @IntoMap
     @ViewModelKey(HistoryViewModel::class)
@@ -16,4 +16,5 @@ class ViewModelModule {
     fun provideHistoryViewModel(localRepository: LocalRepository): ViewModel {
         return HistoryViewModel(localRepository)
     }
+
 }

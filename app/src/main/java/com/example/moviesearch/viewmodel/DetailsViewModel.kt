@@ -3,6 +3,7 @@ package com.example.moviesearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moviesearch.di.DetailsScope
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.repository.DetailsRepository
@@ -12,8 +13,10 @@ import com.example.moviesearch.utils.SERVER_ERROR
 import com.example.moviesearch.utils.convertDtoToModel
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
-class DetailsViewModel(
+@DetailsScope
+class DetailsViewModel @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val localRepository: LocalRepository
 ) : ViewModel() {

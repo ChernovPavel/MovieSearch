@@ -1,5 +1,7 @@
-package com.example.moviesearch.di
+package com.example.moviesearch.di.components
 
+import com.example.moviesearch.di.ListScope
+import com.example.moviesearch.di.modules.ListModule
 import com.example.moviesearch.view.main.ListFragment
 import dagger.Subcomponent
 
@@ -9,7 +11,7 @@ import dagger.Subcomponent
         ListModule::class
     ]
 )
-interface ListComponent {
+interface ListSubcomponent {
 
     fun inject(listFragment: ListFragment)
 

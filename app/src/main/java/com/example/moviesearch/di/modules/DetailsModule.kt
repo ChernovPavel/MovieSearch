@@ -1,6 +1,8 @@
-package com.example.moviesearch.di
+package com.example.moviesearch.di.modules
 
 import androidx.lifecycle.ViewModel
+import com.example.moviesearch.di.DetailsScope
+import com.example.moviesearch.di.ViewModelKey
 import com.example.moviesearch.repository.DetailsRepository
 import com.example.moviesearch.repository.DetailsRepositoryImpl
 import com.example.moviesearch.repository.LocalRepository
@@ -19,6 +21,7 @@ class DetailsModule {
         return DetailsRepositoryImpl(remoteDataSource)
     }
 
+    @DetailsScope
     @IntoMap
     @ViewModelKey(DetailsViewModel::class)
     @Provides

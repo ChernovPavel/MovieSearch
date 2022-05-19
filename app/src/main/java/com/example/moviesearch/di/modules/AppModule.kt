@@ -1,4 +1,4 @@
-package com.example.moviesearch.di
+package com.example.moviesearch.di.modules
 
 import android.content.Context
 import androidx.room.Room
@@ -32,6 +32,7 @@ class AppModule(private val context: Context) {
         return LocalRepositoryImpl(localDataSource)
     }
 
+    @Singleton
     @Provides
     fun provideHistoryDao(context: Context): HistoryDao {
         val dbName = "History.db"
@@ -46,11 +47,13 @@ class AppModule(private val context: Context) {
         return db.historyDao()
     }
 
+    @Singleton
     @Provides
     fun provideRetrofitInterface(retrofit: Retrofit): MovieAPI {
         return retrofit.create(MovieAPI::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -64,6 +67,7 @@ class AppModule(private val context: Context) {
             .build()
     }
 
+    @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()

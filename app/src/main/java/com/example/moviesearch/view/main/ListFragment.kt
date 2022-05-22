@@ -1,23 +1,24 @@
 package com.example.moviesearch.view.main
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
-import com.example.moviesearch.utils.IS_RUSSIAN_LANGUAGE
-import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.ListViewModel
 import com.example.moviesearch.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ListFragment : Fragment() {
@@ -56,18 +57,14 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.listFragmentRecyclerView.adapter = adapter
-        viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner) { renderData(it) }
-        showMoviesList()
-    }
 
-    private fun showMoviesList() {
-        activity?.let {
-            viewModel.getListTopMoviesFromAPI(
-                it.getPreferences(Context.MODE_PRIVATE)
-                    .getBoolean(IS_RUSSIAN_LANGUAGE, false)
-            )
+        viewLifecycleOwner.lifecycle.coroutineScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.liveListMoviesToObserve.collect {
+                    renderData(it)
+                }
+            }
         }
     }
 
@@ -86,23 +83,22 @@ class ListFragment : Fragment() {
             is AppState.Success -> {
                 val movieData = appState.movieData
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
-                val movieDiffUtilCallback = MoviesDiffUtilsCallback(adapter.movieData, movieData)
-                val movieDiffResult = DiffUtil.calculateDiff(movieDiffUtilCallback)
-                adapter.setMovie(movieData)
-                movieDiffResult.dispatchUpdatesTo(adapter)
+                displayData(movieData)
             }
             is AppState.Loading -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
-                binding.fragmentListRootView.showSnackBar(
-                    appState.error.message.toString(),
-                    getString(R.string.reload),
-                    { showMoviesList() }
-                )
             }
         }
+    }
+
+    private fun displayData(movieData: List<Movie>) {
+        val movieDiffUtilCallback = MoviesDiffUtilsCallback(adapter.movieData, movieData)
+        val movieDiffResult = DiffUtil.calculateDiff(movieDiffUtilCallback)
+        adapter.setMovie(movieData)
+        movieDiffResult.dispatchUpdatesTo(adapter)
     }
 
     /**

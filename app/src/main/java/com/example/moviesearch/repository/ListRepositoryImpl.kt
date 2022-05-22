@@ -7,8 +7,9 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @ListScope
-class ListRepositoryImpl @Inject constructor(private val remoteDataSource: RemoteDataSource) :
-    ListRepository {
+class ListRepositoryImpl @Inject constructor(
+    private val remoteDataSource: RemoteDataSource
+) : ListRepository {
 
     override suspend fun getTopMoviesFromServer(isRuLanguage: Boolean): Response<MoviesResponse> {
         return remoteDataSource.getListTopMovies(isRuLanguage)

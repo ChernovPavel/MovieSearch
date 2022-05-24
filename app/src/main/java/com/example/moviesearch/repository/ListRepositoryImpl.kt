@@ -16,7 +16,9 @@ class ListRepositoryImpl @Inject constructor(
 
     override fun getTopMoviesFromServer(isRuLanguage: Boolean): Flow<AppState> =
 
-        flow { emit(remoteDataSource.getListTopMovies(isRuLanguage).results) }
+        flow {
+            remoteDataSource.getListTopMovies(isRuLanguage).collect { emit(it.results) }
+        }
             .flowOn(Dispatchers.IO)
             .map { dto -> dto.convert() }
             .map { list -> AppState.Success(list) }

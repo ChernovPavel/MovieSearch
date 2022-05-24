@@ -1,8 +1,8 @@
 package com.example.moviesearch.repository
 
-import com.example.moviesearch.viewmodel.AppState
+import com.example.moviesearch.model.MovieDTO
 import kotlinx.coroutines.flow.Flow
 
 interface ListRepository {
-    fun getTopMoviesFromServer(isRuLanguage: Boolean): Flow<AppState>
+    fun getTopMoviesFromServer(isRuLanguage: Boolean): Flow<List<MovieDTO>>
 }

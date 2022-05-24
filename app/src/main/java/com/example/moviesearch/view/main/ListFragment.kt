@@ -61,7 +61,7 @@ class ListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.liveListMoviesToObserve.collect {
+                viewModel.appState.collect {
                     renderData(it)
                 }
             }

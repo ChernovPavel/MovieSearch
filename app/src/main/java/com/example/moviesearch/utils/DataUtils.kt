@@ -20,7 +20,7 @@ fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
     )
 }
 
-fun convertMoviesResponseToModel(listMovies: MoviesResponse): List<Movie> {
+fun convertMoviesResponseToMovie(listMovies: MoviesResponse): List<Movie> {
     val list: List<Movie> = listMovies.results.map {
         Movie(
             it.id!!,

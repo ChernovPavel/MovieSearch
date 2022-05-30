@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.app.App
@@ -18,6 +21,7 @@ import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.ListViewModel
 import com.example.moviesearch.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ListFragment : Fragment() {
@@ -56,10 +60,16 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.listFragmentRecyclerView.adapter = adapter
-        viewModel.liveListMoviesToObserve.observe(viewLifecycleOwner) { renderData(it) }
         showMoviesList()
+
+        viewLifecycleOwner.lifecycle.coroutineScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.appState.collect {
+                    renderData(it)
+                }
+            }
+        }
     }
 
     private fun showMoviesList() {
@@ -86,10 +96,7 @@ class ListFragment : Fragment() {
             is AppState.Success -> {
                 val movieData = appState.movieData
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
-                val movieDiffUtilCallback = MoviesDiffUtilsCallback(adapter.movieData, movieData)
-                val movieDiffResult = DiffUtil.calculateDiff(movieDiffUtilCallback)
-                adapter.setMovie(movieData)
-                movieDiffResult.dispatchUpdatesTo(adapter)
+                displayData(movieData)
             }
             is AppState.Loading -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
@@ -103,6 +110,13 @@ class ListFragment : Fragment() {
                 )
             }
         }
+    }
+
+    private fun displayData(movieData: List<Movie>) {
+        val movieDiffUtilCallback = MoviesDiffUtilsCallback(adapter.movieData, movieData)
+        val movieDiffResult = DiffUtil.calculateDiff(movieDiffUtilCallback)
+        adapter.setMovie(movieData)
+        movieDiffResult.dispatchUpdatesTo(adapter)
     }
 
     /**

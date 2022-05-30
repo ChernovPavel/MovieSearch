@@ -1,5 +1,6 @@
 package com.example.moviesearch.view.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import com.example.moviesearch.R
 import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentListBinding
 import com.example.moviesearch.model.Movie
+import com.example.moviesearch.utils.IS_RUSSIAN_LANGUAGE
+import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.view.details.DetailsFragment
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.ListViewModel
@@ -58,6 +61,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.listFragmentRecyclerView.adapter = adapter
+        showMoviesList()
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -65,6 +69,15 @@ class ListFragment : Fragment() {
                     renderData(it)
                 }
             }
+        }
+    }
+
+    private fun showMoviesList() {
+        activity?.let {
+            viewModel.getListTopMoviesFromAPI(
+                it.getPreferences(Context.MODE_PRIVATE)
+                    .getBoolean(IS_RUSSIAN_LANGUAGE, false)
+            )
         }
     }
 
@@ -90,6 +103,11 @@ class ListFragment : Fragment() {
             }
             is AppState.Error -> {
                 binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
+                binding.fragmentListRootView.showSnackBar(
+                    appState.error.message.toString(),
+                    getString(R.string.reload),
+                    { showMoviesList() }
+                )
             }
         }
     }

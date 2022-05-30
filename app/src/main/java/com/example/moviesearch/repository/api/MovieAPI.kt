@@ -18,5 +18,5 @@ interface MovieAPI {
     suspend fun getTopMovies(
         @Query("language") language: String,
         @Query("api_key") apiKey: String
-    ): MoviesResponse
+    ): Response<MoviesResponse>
 }

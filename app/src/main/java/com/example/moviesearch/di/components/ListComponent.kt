@@ -7,7 +7,7 @@ import dagger.Component
 
 @ListScope
 @Component(
-    dependencies = [AppComponent::class],
+    dependencies = [RemoteDataComponent::class],
     modules = [ListModule::class]
 )
 interface ListComponent {

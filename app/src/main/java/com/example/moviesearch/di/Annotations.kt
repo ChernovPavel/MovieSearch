@@ -20,3 +20,13 @@ annotation class DetailsScope
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
 annotation class HistoryScope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class LocalRepositoryScope
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RemoteDataScope
+
+

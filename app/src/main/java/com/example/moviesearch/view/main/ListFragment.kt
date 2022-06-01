@@ -57,11 +57,11 @@ class ListFragment : Fragment() {
     ): View {
 
         val listComponent: ListComponent = DaggerListComponent.builder()
-            .appComponent((requireActivity().applicationContext as App).appComponent)
+            .remoteDataComponent((requireActivity().applicationContext as App).remoteDataComponent)
             .build()
 
         listComponent.inject(this)
-        
+
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }

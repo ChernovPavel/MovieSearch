@@ -7,7 +7,7 @@ import dagger.Component
 
 @HistoryScope
 @Component(
-    dependencies = [AppComponent::class],
+    dependencies = [LocalRepositoryComponent::class],
     modules = [HistoryModule::class]
 )
 interface HistoryComponent {

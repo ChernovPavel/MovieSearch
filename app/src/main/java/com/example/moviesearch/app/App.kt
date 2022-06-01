@@ -10,12 +10,19 @@ class App : Application() {
         .appModule(AppModule(this))
         .build()
 
-
-    val detailComponent: DetailsComponent = DaggerDetailsComponent.builder()
+    val localRepositoryComponent: LocalRepositoryComponent = DaggerLocalRepositoryComponent.builder()
         .appComponent(appComponent)
         .build()
 
+    val remoteDataComponent: RemoteDataComponent = DaggerRemoteDataComponent.builder()
+        .build()
+
+    val detailComponent: DetailsComponent = DaggerDetailsComponent.builder()
+        .localRepositoryComponent(localRepositoryComponent)
+        .remoteDataComponent(remoteDataComponent)
+        .build()
+
     val historyComponent: HistoryComponent = DaggerHistoryComponent.builder()
-        .appComponent(appComponent)
+        .localRepositoryComponent(localRepositoryComponent)
         .build()
 }

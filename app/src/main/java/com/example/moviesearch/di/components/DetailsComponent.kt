@@ -7,11 +7,10 @@ import dagger.Component
 
 @DetailsScope
 @Component(
-    dependencies = [AppComponent::class],
+    dependencies = [LocalRepositoryComponent::class, RemoteDataComponent::class],
     modules = [DetailsModule::class]
 )
 interface DetailsComponent {
 
     fun inject(detailsFragment: DetailsFragment)
-
 }

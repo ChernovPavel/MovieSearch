@@ -1,8 +1,7 @@
 package com.example.moviesearch.di.components
 
 import com.example.moviesearch.di.modules.AppModule
-import com.example.moviesearch.repository.LocalRepository
-import com.example.moviesearch.repository.api.RemoteDataSource
+import com.example.moviesearch.room.HistoryDao
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,6 +13,5 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
-    fun getLocalRepository(): LocalRepository
-    fun getRemoteDataSource(): RemoteDataSource
+    fun getHistoryDao(): HistoryDao
 }

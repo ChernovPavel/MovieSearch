@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentListBinding
+import com.example.moviesearch.di.components.DaggerListComponent
+import com.example.moviesearch.di.components.ListComponent
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.IS_RUSSIAN_LANGUAGE
 import com.example.moviesearch.utils.showSnackBar
@@ -53,7 +55,13 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        (requireActivity().applicationContext as App).appComponent.getListComponent().inject(this)
+
+        val listComponent: ListComponent = DaggerListComponent.builder()
+            .appComponent((requireActivity().applicationContext as App).appComponent)
+            .build()
+
+        listComponent.inject(this)
+        
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -3,15 +3,14 @@ package com.example.moviesearch.di.components
 import com.example.moviesearch.di.DetailsScope
 import com.example.moviesearch.di.modules.DetailsModule
 import com.example.moviesearch.view.details.DetailsFragment
-import dagger.Subcomponent
+import dagger.Component
 
 @DetailsScope
-@Subcomponent(
-    modules = [
-        DetailsModule::class
-    ]
+@Component(
+    dependencies = [AppComponent::class],
+    modules = [DetailsModule::class]
 )
-interface DetailsSubcomponent {
+interface DetailsComponent {
 
     fun inject(detailsFragment: DetailsFragment)
 

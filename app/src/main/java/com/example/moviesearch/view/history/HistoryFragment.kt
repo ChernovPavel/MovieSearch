@@ -35,8 +35,7 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity().applicationContext as App).appComponent.getHistoryComponent()
-            .inject(this)
+        (requireActivity().applicationContext as App).historyComponent.inject(this)
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -47,8 +47,7 @@ class DetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        (requireActivity().applicationContext as App).appComponent.getDetailsComponent()
-            .inject(this)
+        (requireActivity().applicationContext as App).detailComponent.inject(this)
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }

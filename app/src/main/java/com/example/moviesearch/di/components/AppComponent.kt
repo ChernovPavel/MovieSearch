@@ -1,6 +1,8 @@
 package com.example.moviesearch.di.components
 
 import com.example.moviesearch.di.modules.AppModule
+import com.example.moviesearch.repository.LocalRepository
+import com.example.moviesearch.repository.api.RemoteDataSource
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,8 +14,6 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
-    fun getListComponent(): ListSubcomponent
-    fun getDetailsComponent(): DetailsSubcomponent
-    fun getHistoryComponent(): HistorySubcomponent
-
+    fun getLocalRepository(): LocalRepository
+    fun getRemoteDataSource(): RemoteDataSource
 }

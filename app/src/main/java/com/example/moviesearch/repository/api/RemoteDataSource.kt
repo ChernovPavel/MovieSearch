@@ -1,17 +1,17 @@
 package com.example.moviesearch.repository.api
 
 import com.example.moviesearch.BuildConfig
+import com.example.moviesearch.di.RemoteDataScope
 import com.example.moviesearch.model.MovieDTO
 import com.example.moviesearch.model.MoviesResponse
 import retrofit2.Response
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 private const val RUSSIAN = "ru"
 private const val ENGLISH = "en"
 
-@Singleton
+@RemoteDataScope
 class RemoteDataSource @Inject constructor(private val movieApi: MovieAPI) {
 
     private lateinit var movieLanguage: String

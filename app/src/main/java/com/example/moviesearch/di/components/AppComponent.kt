@@ -1,6 +1,7 @@
 package com.example.moviesearch.di.components
 
 import com.example.moviesearch.di.modules.AppModule
+import com.example.moviesearch.room.HistoryDao
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,8 +13,5 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
-    fun getListComponent(): ListSubcomponent
-    fun getDetailsComponent(): DetailsSubcomponent
-    fun getHistoryComponent(): HistorySubcomponent
-
+    fun getHistoryDao(): HistoryDao
 }

@@ -3,16 +3,14 @@ package com.example.moviesearch.di.components
 import com.example.moviesearch.di.HistoryScope
 import com.example.moviesearch.di.modules.HistoryModule
 import com.example.moviesearch.view.history.HistoryFragment
-import dagger.Subcomponent
+import dagger.Component
 
 @HistoryScope
-@Subcomponent(
-    modules = [
-        HistoryModule::class
-    ]
+@Component(
+    dependencies = [LocalRepositoryComponent::class],
+    modules = [HistoryModule::class]
 )
-interface HistorySubcomponent {
+interface HistoryComponent {
 
     fun inject(historyFragment: HistoryFragment)
-
 }

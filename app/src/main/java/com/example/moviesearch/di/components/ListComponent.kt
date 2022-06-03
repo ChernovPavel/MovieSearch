@@ -3,16 +3,14 @@ package com.example.moviesearch.di.components
 import com.example.moviesearch.di.ListScope
 import com.example.moviesearch.di.modules.ListModule
 import com.example.moviesearch.view.main.ListFragment
-import dagger.Subcomponent
+import dagger.Component
 
 @ListScope
-@Subcomponent(
-    modules = [
-        ListModule::class
-    ]
+@Component(
+    dependencies = [RemoteDataComponent::class],
+    modules = [ListModule::class]
 )
-interface ListSubcomponent {
+interface ListComponent {
 
     fun inject(listFragment: ListFragment)
-
 }

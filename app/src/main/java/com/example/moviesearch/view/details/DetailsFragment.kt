@@ -14,6 +14,8 @@ import androidx.fragment.app.viewModels
 import com.example.moviesearch.R
 import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentDetailsBinding
+import com.example.moviesearch.di.components.DaggerDetailsComponent
+import com.example.moviesearch.di.components.DetailsComponent
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.utils.hideKeyboard
 import com.example.moviesearch.utils.showSnackBar
@@ -47,8 +49,14 @@ class DetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        (requireActivity().applicationContext as App).appComponent.getDetailsComponent()
-            .inject(this)
+
+        val detailComponent: DetailsComponent = DaggerDetailsComponent.builder()
+            .localRepositoryComponent((requireActivity().applicationContext as App).localRepositoryComponent)
+            .remoteDataComponent((requireActivity().applicationContext as App).remoteDataComponent)
+            .build()
+
+        detailComponent.inject(this)
+
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }

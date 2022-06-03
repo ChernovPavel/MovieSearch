@@ -16,13 +16,4 @@ class App : Application() {
 
     val remoteDataComponent: RemoteDataComponent = DaggerRemoteDataComponent.builder()
         .build()
-
-    val detailComponent: DetailsComponent = DaggerDetailsComponent.builder()
-        .localRepositoryComponent(localRepositoryComponent)
-        .remoteDataComponent(remoteDataComponent)
-        .build()
-
-    val historyComponent: HistoryComponent = DaggerHistoryComponent.builder()
-        .localRepositoryComponent(localRepositoryComponent)
-        .build()
 }

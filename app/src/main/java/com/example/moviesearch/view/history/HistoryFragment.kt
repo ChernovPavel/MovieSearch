@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.moviesearch.R
 import com.example.moviesearch.app.App
 import com.example.moviesearch.databinding.FragmentHistoryBinding
+import com.example.moviesearch.di.components.DaggerHistoryComponent
+import com.example.moviesearch.di.components.HistoryComponent
 import com.example.moviesearch.utils.showSnackBar
 import com.example.moviesearch.viewmodel.AppState
 import com.example.moviesearch.viewmodel.HistoryViewModel
@@ -35,7 +37,13 @@ class HistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity().applicationContext as App).historyComponent.inject(this)
+
+        val historyComponent: HistoryComponent = DaggerHistoryComponent.builder()
+            .localRepositoryComponent((requireActivity().applicationContext as App).localRepositoryComponent)
+            .build()
+
+        historyComponent.inject(this)
+
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -1,7 +1,7 @@
 package com.example.moviesearch.repository.api
 
 import com.example.moviesearch.model.MovieDTO
-import com.example.moviesearch.model.MoviesResponse
+import com.example.moviesearch.repository.response.ListMoviesResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,5 +18,5 @@ interface MovieAPI {
     suspend fun getTopMovies(
         @Query("language") language: String,
         @Query("api_key") apiKey: String
-    ): Response<MoviesResponse>
+    ): Response<ListMoviesResponse>
 }

@@ -2,7 +2,7 @@ package com.example.moviesearch.utils
 
 import com.example.moviesearch.model.Movie
 import com.example.moviesearch.model.MovieDTO
-import com.example.moviesearch.model.MoviesResponse
+import com.example.moviesearch.repository.response.ListMoviesResponse
 import com.example.moviesearch.room.HistoryEntity
 
 fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
@@ -20,7 +20,7 @@ fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
     )
 }
 
-fun convertMoviesResponseToMovie(listMovies: MoviesResponse): List<Movie> {
+fun convertMoviesResponseToMovie(listMovies: ListMoviesResponse): List<Movie> {
     val list: List<Movie> = listMovies.results.map {
         Movie(
             it.id!!,

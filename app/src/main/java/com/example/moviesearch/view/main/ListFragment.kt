@@ -56,6 +56,8 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
+        val x: String = "hello"
+
         val listComponent: ListComponent = DaggerListComponent.builder()
             .remoteDataComponent((requireActivity().applicationContext as App).remoteDataComponent)
             .build()

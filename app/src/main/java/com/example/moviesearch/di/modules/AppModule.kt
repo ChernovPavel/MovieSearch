@@ -31,3 +31,5 @@ class AppModule(private val context: Context) {
         return db.historyDao()
     }
 }
+
+
